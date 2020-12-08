@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <title>Realtime communication with WebRTC</title>
+
+
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+
+</head>
+
+<body>
+<video id="localVideo" autoplay playsinline></video>
+<video id="remoteVideo" autoplay playsinline></video>
+<div>
+    <button id="startButton">Start</button>
+    <button id="callButton">Call</button>
+    <button id="hangupButton">Hang Up</button>
+</div>
+
+<!--<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>-->
+<script src="/js/main.js"></script>
+
+</body>
+
+</html>

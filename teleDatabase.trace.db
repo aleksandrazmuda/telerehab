@@ -1,0 +1,16 @@
+2020-12-08 21:54:20 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "DELETE *[*] FROM PATIENT PATIENT"; oczekiwano "identifier"
+Syntax error in SQL statement "DELETE *[*] FROM PATIENT PATIENT"; expected "identifier"; SQL statement:
+delete * FROM PATIENT PATIENT [42001-200]
+2020-12-08 21:54:32 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "DELETE *[*] FROM PATIENT_TRAINING_DATES"; oczekiwano "identifier"
+Syntax error in SQL statement "DELETE *[*] FROM PATIENT_TRAINING_DATES"; expected "identifier"; SQL statement:
+delete * FROM PATIENT_TRAINING_DATES [42001-200]
+2020-12-08 21:54:41 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "DELETE *[*] FROM PATIENT_TRAINING_DATES"; oczekiwano "identifier"
+Syntax error in SQL statement "DELETE *[*] FROM PATIENT_TRAINING_DATES"; expected "identifier"; SQL statement:
+DELETE * FROM PATIENT_TRAINING_DATES [42001-200]
+2020-12-08 21:55:34 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Błąd składniowy w wyrażeniu SQL "DELETE *[*] FROM PATIENT"; oczekiwano "identifier"
+Syntax error in SQL statement "DELETE *[*] FROM PATIENT"; expected "identifier"; SQL statement:
+DELETE * FROM PATIENT [42001-200]
