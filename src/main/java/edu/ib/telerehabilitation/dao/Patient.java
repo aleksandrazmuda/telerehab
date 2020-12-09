@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Patient {
@@ -17,6 +18,11 @@ public class Patient {
             inverseJoinColumns = @JoinColumn(name = "specialist_id"))
     private Specialist specialist;
 
+    @ManyToMany
+    @JoinTable(name = "patient_exercise", joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    private Set<Exercise> exercises;
+
     private String email;
     private String userName;
     private String name;
@@ -27,7 +33,8 @@ public class Patient {
     private List<LocalDate> trainingDates = new ArrayList<LocalDate>();
     private String resultsDescription;
 
-    public Patient(Specialist specialist, String email, String userName, String name, String surname, String phoneNumber, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
+    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname, String phoneNumber, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
+        this.exercises= exercises;
         this.specialist = specialist;
         this.email = email;
         this.userName = userName;
@@ -48,6 +55,14 @@ public class Patient {
 
     public void setSpecialist(Specialist specialist) {
         this.specialist = specialist;
+    }
+
+    public Set<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(Set<Exercise> exercises) {
+        this.exercises = exercises;
     }
 
     public Long getId() {
@@ -127,6 +142,7 @@ public class Patient {
         return "Patient{" +
                 "id=" + id +
                 ", specialist=" + specialist +
+                ", exercises=" + exercises +
                 ", email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
                 ", name='" + name + '\'' +
