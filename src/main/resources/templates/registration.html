@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Sign up as a specialist</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="row justify-content-center">
+    <form>
+        <div class="container-fluid">
+            <div class=raw>
+                <fieldset>
+                    <legend>Registration</legend>
+                    <div class="form-group">
+
+                        <label class="col-form-label" for="inputDefault1">e-mail</label>
+                        <input required type="email" size=80 name="email" class="form-control"
+                               placeholder="Enter e-mail address" id="inputDefault1">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault2">Username</label>
+                        <input required type="text" name="username" class="form-control"
+                               placeholder="Enter username" id="inputDefault2">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault3">Name</label>
+                        <input required type="text" name="name" class="form-control"
+                               placeholder="Enter name" id="inputDefault3">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault5">Surname</label>
+                        <input required type="text" name="surname" class="form-control"
+                               placeholder="Enter surname" id="inputDefault5">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault6">Phone number</label>
+                        <input required type="text" name="phone" class="form-control"
+                               placeholder="Enter phone number" id="inputDefault6">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault4">Password</label>
+                        <input required type="password" name="password" class="form-control"
+                               placeholder="Enter password" id="inputDefault4">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault7">Confirm password</label>
+                        <input required type="password" name="password confirmation" class="form-control"
+                               placeholder="Confirm password" id="inputDefault7">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault8">Choose your role</label>
+                            <select class="form-control" id="inputDefault8">
+                                <option>Patient</option>
+                                <option>Specialist</option>
+                            </select>
+                    </div>
+
+                    <div class="row form-group"></div>
+
+                    <button type="submit" value="add new specialist" class="btn btn-outline-primary role=">Submit
+                    </button>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+
+</html>

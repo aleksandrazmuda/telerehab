@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-
-    <title>Realtime communication with WebRTC</title>
-
-
+    <title>Telerehabilitation app</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
-
 </head>
 
 <body>
-<video id="localVideo" autoplay playsinline></video>
-<video id="remoteVideo" autoplay playsinline></video>
-<div>
-    <button id="startButton">Start</button>
-    <button id="callButton">Call</button>
-    <button id="hangupButton">Hang Up</button>
+
+This is main page. You can register as a patient or specialist.
+
+<div class="container">
+    <p><a th:href="@{/registration}">
+        <button class="btn btn-info">Registration</button>
+    </a></p>
 </div>
 
-<!--<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>-->
-<script src="/js/main.js"></script>
+<div class="row justify-content-center">
+    <form>
+        <div class="container-fluid">
+            <div class=raw>
+                <fieldset>
+                    <legend>Log in</legend>
+                    <div class="form-group">
+
+                        <label class="col-form-label" for="inputDefault1">e-mail</label>
+                        <input required type="email"  name="email" class="form-control"
+                               placeholder="Enter e-mail address" id="inputDefault1">
+                        <div class="row form-group"></div>
+
+                        <label class="col-form-label" for="inputDefault2">password</label>
+                        <input required type="password" name="password" class="form-control"
+                               placeholder="Enter password" id="inputDefault2">
+                        <div class="row form-group"></div>
+
+                    </div>
+
+
+                    <div class="row form-group"></div>
+
+                    <button type="submit" value="log in" class="btn btn-outline-primary role=">Log in</button>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
 
 </body>
 
