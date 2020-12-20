@@ -1,4 +1,4 @@
-package edu.ib.telerehabilitation.dao;
+package edu.ib.telerehabilitation.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

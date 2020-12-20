@@ -1,4 +1,4 @@
-package edu.ib.telerehabilitation.dao;
+package edu.ib.telerehabilitation.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,19 +28,21 @@ public class Patient {
     private String name;
     private String surname;
     private String phoneNumber;
+    private String password;
     private Frequency frequency;
     @ElementCollection
     private List<LocalDate> trainingDates = new ArrayList<LocalDate>();
     private String resultsDescription;
 
-    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname, String phoneNumber, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
-        this.exercises= exercises;
+    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname, String phoneNumber, String password, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
         this.specialist = specialist;
+        this.exercises = exercises;
         this.email = email;
         this.userName = userName;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
+        this.password = password;
         this.frequency = frequency;
         this.trainingDates = trainingDates;
         this.resultsDescription = resultsDescription;
@@ -135,6 +137,14 @@ public class Patient {
 
     public void setResultsDescription(String resultsDescription) {
         this.resultsDescription = resultsDescription;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
