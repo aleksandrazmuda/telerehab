@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="css/templatemo-style.css"/>
     <link rel="icon" th:href="@{/images/logo.png}" type="image/x-icon"/>
 </head>
-
 <body>
+
 <div class="container-fluid">
     <div class="row tm-brand-row">
         <div class="col-lg-4 col-10">
@@ -35,17 +35,17 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto mr-0">
-                            <li class="nav-item active">
-                                <div class="tm-nav-link-highlight"></div>
-                                <a class="nav-link" href="#"
-                                >Profile <span
-                                        class="sr-only">(current)</span> </a
-                                >
-                            </li>
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" th:href="@{/profilePatient}"
+                                >Profile  </a
+                                >
+                            </li>
+                            <li class="nav-item active">
+                                <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" th:href="@{/aboutPatient}"
-                                >About </a
+                                >About <span
+                                        class="sr-only">(current)</span></a
                                 >
                             </li>
                             <li class="nav-item">
@@ -79,34 +79,53 @@
 
 <section class="row tm-pt-4">
     <div class="col-12 tm-page-cols-container">
-        <div class="tm-page-col-left">
 
-        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr class="table-info">
+                <th scope="col">ID</th>
+                <th th:text="${currentPatient.getId()}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="col">Name and surname</th>
+                <th>[[${currentPatient.getName()}]] [[${currentPatient.getSurname()}]]</th>
+            </tr>
+            <tr>
+                <th scope="col">Username</th>
+                <th th:text="${currentPatient.getUserName()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">Phone number</th>
+                <th th:text="${currentPatient.getPhoneNumber()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">E-mail</th>
+                <th th:text="${currentPatient.getEmail()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">Your specialist</th>
+                <th>[[${currentPatient.getSpecialist().getName()}]] [[${currentPatient.getSpecialist().getSurname()}]]</th>
+            </tr>
+            <tr>
+                <th scope="col">Contact to specialist</th>
+                <th>[[${currentPatient.getSpecialist().getEmail()}]], [[${currentPatient.getSpecialist().getPhoneNumber()}]]</th>
+            </tr>
+            <tr>
+                <th scope="col">Recommended frequency of training</th>
+                <th th:text="${currentPatient.getFrequency()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">Opinion about results</th>
+                <th th:text="${currentPatient.getResultsDescription()}"></th>
+            </tr>
 
+            </tbody>
+        </table>
 
-        <div class="tm-page-col-right">
-
-            <ul th:each="e : ${exercises}">
-                <li>
-                    <strong th:text="${e.getName()}"></strong>
-                    <p th:text="${e.getDescription()}"></p>
-                    <img th:src="${e.getVisualRepresentation()}"  alt="photo" th:width="200">
-
-                </li>
-            </ul>
-
-            TO DO HERE:
-            <br>
-
-            1. Your current training plan (with description and photos) + button "I exercised today"
-            <br>
-            2. Go to audio/video chat
-
-
-        </div>
     </div>
 </section>
-
 
 <div class="row form-group"></div>
 

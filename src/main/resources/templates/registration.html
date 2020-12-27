@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/templatemo-style.css"/>
+    <link rel="icon" th:href="@{/images/logo.png}" type="image/x-icon"/>
 </head>
 
 <body>
@@ -15,7 +16,7 @@
         <div class="col-lg-4 col-10">
             <div class="tm-brand-container">
                 <div class="tm-brand-texts">
-                    <h1 class="text-uppercase tm-brand-name">TeleReh</h1>
+                    <h1 class="text-uppercase tm-brand-name">TeleRehab</h1>
                 </div>
             </div>
         </div>
@@ -34,19 +35,20 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto mr-0">
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" th:href="@{/}"
-                                >Home <span class="sr-only">(current)</span></a
+                                >Home </a
                                 >
                             </li>
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" href="contact.html">Contact</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <div class="tm-nav-link-highlight"></div>
-                                <a class="nav-link" th:href="@{/registration}">Sign up</a>
+                                <a class="nav-link" th:href="@{/registration}">Sign up <span
+                                        class="sr-only">(current)</span></a>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +66,11 @@
                 data-image-src="images/blooming-bg.jpg"
         >
             <div class="tm-bg-black-transparent tm-parallax-overlay">
-
+                <div class="container">
+                    <!--/*@thymesVar id="error" type=""*/-->
+                    <div class="alert alert-danger alert-dismissible" onclose="" role="alert" th:text="${error}"
+                         th:if="${error}"></div>
+                </div>
                 <form th:action="@{/addUser}" th:object="${newUserDTO}" th:method="GET">
                     <div class="container-fluid">
                         <div class=raw>
@@ -127,8 +133,9 @@
 <div class="row form-group"></div>
 <footer class="contact">
     <div class="container-fluid">
-        <address class="contact-info">TELEREH
-            telereh@app.com.pl
+        <img src="images/logo.png" alt="logo" th:width="45" th:height="45">
+        <address class="contact-info">TELEREHAB
+            telerehab@app.com.pl
         </address>
     </div>
 </footer>

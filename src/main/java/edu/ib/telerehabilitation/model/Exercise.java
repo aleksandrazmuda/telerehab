@@ -14,7 +14,7 @@ public class Exercise {
 
     private String name;
     private String description;
-    private String visualRepresentation; //url to photos?
+    private String visualRepresentation;
 
     public Exercise(String name, String description, String visualRepresentation) {
         this.name = name;

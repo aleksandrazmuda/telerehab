@@ -33,17 +33,22 @@ public class RegistrationController {
     }
 
     @RequestMapping("/addUser")
-    public String addUserDTO(@RequestBody @ModelAttribute UserDTO userDTO) {
+    public String addUserDTO(@RequestBody @ModelAttribute UserDTO userDTO, Model model) {
 
         if (userDTO.getRole() == Role.PATIENT) {
-            if ((!patientService.checkIfUserExists(userDTO.getEmail(), userDTO.getPassword())) && (patientService.findByEmail(userDTO.getEmail()) == null))
+            if ((!patientService.checkIfUserExists(userDTO.getEmail(), userDTO.getPassword())) && (patientService.findByEmail(userDTO.getEmail()) == null)){
                 patientService.addUser(userDTO);
+                return "index";}
         } else {
-            if ((!specialistService.checkIfUserExists(userDTO.getEmail(), userDTO.getPassword())) && (specialistService.findByEmail(userDTO.getEmail()) == null))
+            if ((!specialistService.checkIfUserExists(userDTO.getEmail(), userDTO.getPassword())) && (specialistService.findByEmail(userDTO.getEmail()) == null)){
                 specialistService.addUser(userDTO);
+                return "index";}
+
         }
-        // powiadomienie success lub failure
-        return "index";
+
+        model.addAttribute("newUserDTO", new UserDTO());
+        model.addAttribute("error","Registration failed. You must have provided wrong type of data. Try again");
+        return "registration";
     }
 
 }

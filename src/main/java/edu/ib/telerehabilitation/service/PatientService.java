@@ -43,13 +43,21 @@ public class PatientService implements UserService {
         return userExists;
     }
 
-    public Optional<Object> updateSpecialist(Long id, Specialist specialist) {
-        return patientRepo.findById(id)
+    public void updateSpecialist(Long id, Specialist specialist) {
+        patientRepo.findById(id)
                 .map(patient -> {
                     patient.setSpecialist(specialist);
                     patientRepo.save(patient);
                     return patient;
                 });
+    }
+
+    public Iterable<Patient> findAll() {
+        return patientRepo.findAll();
+    }
+
+    public Optional<Patient> findById(Long id) {
+        return patientRepo.findById(id);
     }
 
 }

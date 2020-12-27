@@ -35,17 +35,17 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto mr-0">
-                            <li class="nav-item active">
-                                <div class="tm-nav-link-highlight"></div>
-                                <a class="nav-link" href="#"
-                                >Profile <span
-                                        class="sr-only">(current)</span> </a
-                                >
-                            </li>
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" th:href="@{/profileSpecialist}"
+                                >Profile  </a
+                                >
+                            </li>
+                            <li class="nav-item active">
+                                <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" th:href="@{/aboutSpecialist}"
-                                >About </a
+                                >About <span
+                                        class="sr-only">(current)</span></a
                                 >
                             </li>
                             <li class="nav-item">
@@ -79,90 +79,36 @@
 
 <section class="row tm-pt-4">
     <div class="col-12 tm-page-cols-container">
-        <div class="tm-page-col-left">
-            <ul th:each="p : ${patients}" class="tabs clearfix filters-button-group">
-                <li>
-                    <a th:href="@{/{id}(id=${p.getId()})}" class="active">
-                        <div class="tm-tab-icon"></div>
-                        [[${p.getId()}]]. [[${p.getName()}]] [[${p.getSurname()}]]
-                    </a>
-                </li>
 
-            </ul>
-
-            <div class="row form-group"></div>
-            <div class="container">
-                <!--/*@thymesVar id="error" type=""*/-->
-                <div class="alert alert-danger alert-dismissible" onclose="" role="alert" th:text="${error}"
-                     th:if="${error}"></div>
-                <div class="alert alert-success alert-dismissible" onclose="" role="alert" th:text="${success}"
-                     th:if="${success}"></div>
-            </div>
-            <div class="row form-group"></div>
-
-            <form th:action="@{/findPatient}" th:method="GET">
-
-                <div class="container-fluid">
-                    <div class=raw>
-                        <fieldset>
-                            <legend>Search for a new patient</legend>
-                            <div class="form-group">
-                                <input required type="email" name="email" class="form-control"
-                                       placeholder="Enter e-mail address" id="inputDefault1">
-                            </div>
-                            <div class="row form-group"></div>
-
-                            <button type="submit" value="log in" class="btn btn-info">Add</button>
-                        </fieldset>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-
-        <div class="tm-page-col-right">
             <table class="table table-hover">
                 <thead>
                 <tr class="table-info">
                     <th scope="col">ID</th>
-                    <th th:text="${patient.getId()}"></th>
+                    <th th:text="${currentSpecialist.getId()}"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th scope="col">Name and surname</th>
-                    <th>[[${patient.getName()}]] [[${patient.getSurname()}]]</th>
+                    <th>[[${currentSpecialist.getName()}]] [[${currentSpecialist.getSurname()}]]</th>
                 </tr>
                 <tr>
                     <th scope="col">Username</th>
-                    <th th:text="${patient.getUserName()}"></th>
+                    <th th:text="${currentSpecialist.getUserName()}"></th>
                 </tr>
                 <tr>
                     <th scope="col">Phone number</th>
-                    <th th:text="${patient.getPhoneNumber()}"></th>
+                    <th th:text="${currentSpecialist.getPhoneNumber()}"></th>
                 </tr>
                 <tr>
                     <th scope="col">E-mail</th>
-                    <th th:text="${patient.getEmail()}"></th>
+                    <th th:text="${currentSpecialist.getEmail()}"></th>
                 </tr>
 
                 </tbody>
             </table>
-            TO DO HERE:
-            <br>
-            1. List of training dates added by patient.
-            <br>
-            2. Here list of all the exercises with option to delete each one.
-            List of other exercises and button to add to training.
-            <br>
-            3. List of frequencies to recommend to your patient with submit/add button.
-            <br>
-            4. Empty description to add results description. Also displaying that.
-            <br>
-            5. Go to audio/video chat
 
         </div>
-    </div>
 </section>
 
 
