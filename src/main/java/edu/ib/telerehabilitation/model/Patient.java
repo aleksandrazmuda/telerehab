@@ -30,7 +30,7 @@ public class Patient {
     private String phoneNumber;
     private String password;
     private Frequency frequency;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<LocalDate> trainingDates = new ArrayList<LocalDate>();
     private String resultsDescription;
 

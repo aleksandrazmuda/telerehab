@@ -76,32 +76,36 @@
         </div>
     </div>
 </div>
-
+<div class="container">
+    <div class="alert alert-success alert-dismissible" onclose="" role="alert" th:text="${success}"
+         th:if="${success}"></div>
+</div>
 <section class="row tm-pt-4">
     <div class="col-12 tm-page-cols-container">
+
         <div class="tm-page-col-left">
 
         </div>
 
 
         <div class="tm-page-col-right">
-
+            <h2>Your current training plan</h2>
+            <div class="row form-group"></div>
             <ul th:each="e : ${exercises}">
                 <li>
                     <strong th:text="${e.getName()}"></strong>
-                    <p th:text="${e.getDescription()}"></p>
-                    <img th:src="${e.getVisualRepresentation()}"  alt="photo" th:width="200">
-
+                    <br>
+                    <img th:src="${e.getVisualRepresentation()}" alt="photo" th:width="700">
+                    <div class="row form-group"></div>
                 </li>
             </ul>
 
-            TO DO HERE:
-            <br>
-
-            1. Your current training plan (with description and photos) + button "I exercised today"
-            <br>
-            2. Go to audio/video chat
-
+            <a th:href="@{/trainingDone}">
+                <button value="call" class="btn btn-info">
+                    TRAINING DONE!
+                </button>
+            </a>
+            <p>Click to inform specialist.</p>
 
         </div>
     </div>

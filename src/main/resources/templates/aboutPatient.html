@@ -4,6 +4,7 @@
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/templatemo-style.css"/>
@@ -38,7 +39,7 @@
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" th:href="@{/profilePatient}"
-                                >Profile  </a
+                                >Profile </a
                                 >
                             </li>
                             <li class="nav-item active">
@@ -106,15 +107,33 @@
             </tr>
             <tr>
                 <th scope="col">Your specialist</th>
-                <th>[[${currentPatient.getSpecialist().getName()}]] [[${currentPatient.getSpecialist().getSurname()}]]</th>
+                <th>[[${currentPatient.getSpecialist().getName()}]] [[${currentPatient.getSpecialist().getSurname()}]]
+                </th>
             </tr>
             <tr>
                 <th scope="col">Contact to specialist</th>
-                <th>[[${currentPatient.getSpecialist().getEmail()}]], [[${currentPatient.getSpecialist().getPhoneNumber()}]]</th>
+                <th>
+
+                    [[${currentPatient.getSpecialist().getEmail()}]],
+                    [[${currentPatient.getSpecialist().getPhoneNumber()}]]
+                </th>
+            </tr>
+            <tr>
+                <th scope="col">Audio/video chat</th>
+                <th><a th:href="@{/call}">
+                    <button value="call" class="btn btn-info">
+                        Call now
+                    </button>
+                </a>
+                </th>
             </tr>
             <tr>
                 <th scope="col">Recommended frequency of training</th>
                 <th th:text="${currentPatient.getFrequency()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">History of your trainings</th>
+                <th th:text="${currentPatient.getTrainingDates()}"></th>
             </tr>
             <tr>
                 <th scope="col">Opinion about results</th>

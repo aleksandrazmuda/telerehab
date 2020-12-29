@@ -97,13 +97,15 @@
                                            class="form-control"
                                            placeholder="Enter surname" id="inputDefault5">
 
-                                    <label class="col-form-label" for="inputDefault6">Phone number</label>
-                                    <input required type="text" name="phone" th:field="*{phoneNumber}"
-                                           class="form-control"
-                                           placeholder="Enter phone number" id="inputDefault6">
+                                    <label class="col-form-label" for="inputDefault6">Phone number </label>
+                                    <input required type="tel" name="phone" th:field="*{phoneNumber}"
+                                           class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
+                                           placeholder="Format: 123-456-789" id="inputDefault6">
+
+
 
                                     <label class="col-form-label" for="inputDefault4">Password</label>
-                                    <input required type="password" name="password" th:field="*{password}"
+                                    <input required type="password" minlength="6" name="password" th:field="*{password}"
                                            class="form-control"
                                            placeholder="Enter password" id="inputDefault4">
 

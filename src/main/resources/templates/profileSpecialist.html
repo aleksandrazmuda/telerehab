@@ -81,6 +81,7 @@
     <div class="col-12 tm-page-cols-container">
         <div class="tm-page-col-left">
             <ul th:each="p : ${patients}" class="tabs clearfix filters-button-group">
+
                 <li>
                     <a th:href="@{/{id}(id=${p.getId()})}" class="active">
                         <div class="tm-tab-icon"></div>
@@ -120,7 +121,7 @@
         </div>
 
 
-        <div class="tm-page-col-right">
+        <div class="tm-page-col-right" th:if="${patient.getId()}!=null">
             <table class="table table-hover">
                 <thead>
                 <tr class="table-info">
@@ -144,22 +145,115 @@
                 <tr>
                     <th scope="col">E-mail</th>
                     <th th:text="${patient.getEmail()}"></th>
+
+                </tr>
+                <tr>
+                    <th scope="col">Audio/video chat</th>
+                    <th><a th:href="@{/call}">
+                        <button value="call" class="btn btn-info">
+                            Call now
+                        </button>
+                    </a>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">History of trainings</th>
+                    <th th:text="${patient.getTrainingDates()}"></th>
+
+                </tr>
+                <tr>
+                    <th scope="col">Recommended frequency</th>
+                    <th th:text="${patient.getFrequency()}"></th>
+                </tr>
+                <tr>
+
+                    <th scope="col">Change frequency</th>
+                    <th>
+
+                        <form class="form-inline" th:align="center" th:action="@{/updateFrequency}">
+                            <div class="container-fluid" align="center">
+                                <div class=raw>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <select th:name="frequencyChosen" class="form-control" id="exampleSelect3">
+                                                <option th:each="f : ${frequencyList}" th:text="${f}"></option>
+                                            </select>
+                                            <button type="submit" value="submit1" class="btn btn-info">Set
+                                            </button>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Results notes</th>
+                    <th th:text="${patient.getResultsDescription()}"></th>
+                </tr>
+                <tr>
+                    <th scope="col">Change results notes</th>
+                    <th>
+                        <form th:action="@{/opinion}" th:method="GET">
+
+                            <div class="container-fluid">
+                                <div class=raw>
+                                    <fieldset>
+
+                                        <div class="form-group">
+                                            <textarea
+                                                    rows="10"
+                                                    id="opinion"
+                                                    name="opinion"
+                                                    class="form-control rounded-0"
+                                                    placeholder="Your Message"
+                                                    required=""></textarea>
+                                        </div>
+                                        <button type="submit" value="log in" class="btn btn-info">Set</button>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </form>
+                    </th>
                 </tr>
 
+                <tr>
+                    <th scope="col">Current training plan</th>
+
+                </tr>
                 </tbody>
             </table>
-            TO DO HERE:
-            <br>
-            1. List of training dates added by patient.
-            <br>
-            2. Here list of all the exercises with option to delete each one.
-            List of other exercises and button to add to training.
-            <br>
-            3. List of frequencies to recommend to your patient with submit/add button.
-            <br>
-            4. Empty description to add results description. Also displaying that.
-            <br>
-            5. Go to audio/video chat
+
+
+            <ul th:each="e : ${exercises}">
+                <li>
+                    <strong th:text="${e.getName()}"></strong><br>
+                    <img th:src="${e.getVisualRepresentation()}" alt="photo" th:width="700">
+                </li>
+                <form th:action="@{/deleteExercise/{id}(id=${e.getId()})}">
+                    <button type="submit" class="btn btn-danger"
+                            onClick="return confirm('Are you sure you want to delete this exercise?')">Delete
+                    </button>
+                </form>
+                <div class="row form-group"></div>
+            </ul>
+
+            <div class="row form-group"></div>
+            <form th:align="center" th:action="@{/addNewExercise}">
+                <div class="container-fluid" align="center">
+                    <div class=raw>
+                        <fieldset>
+                            <div class="form-group">
+                                <select th:name="exerciseChosen" class="form-control" id="exampleSelect2">
+                                    <option th:each="e : ${exerciseList}" th:text="${e.getName()}"></option>
+                                </select>
+                            </div>
+                            <button type="submit" value="submit1" class="btn btn-info">Add an exercise</button>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
 
         </div>
     </div>

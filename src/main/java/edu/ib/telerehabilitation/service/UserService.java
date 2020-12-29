@@ -9,5 +9,5 @@ public interface UserService {
 
     void addUser(UserDTO userDTO);
 
-    Boolean checkIfUserExists(String email, String password);
+    Boolean checkIfUserExists(String email, String password, String role);
 }

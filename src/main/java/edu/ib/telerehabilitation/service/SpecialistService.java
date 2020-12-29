@@ -28,6 +28,10 @@ public class SpecialistService implements UserService {
         return specialistRepo.findByEmail(email);
     }
 
+    public Specialist findByUsername(String username) {
+        return specialistRepo.findByUserName(username);
+    }
+
     @Override
     public void addUser(UserDTO userDTO) {
         Specialist specialist = new Specialist();
@@ -41,10 +45,10 @@ public class SpecialistService implements UserService {
     }
 
     @Override
-    public Boolean checkIfUserExists(String email, String password) {
+    public Boolean checkIfUserExists(String email, String password, String role) {
         Specialist specialist = specialistRepo.findByEmail(email);
         boolean userExists;
-        userExists = (specialist != null && password.equals(specialist.getPassword()));
+        userExists = (specialist != null && password.equals(specialist.getPassword()) && role.equals("SPECIALIST"));
         return userExists;
     }
 }

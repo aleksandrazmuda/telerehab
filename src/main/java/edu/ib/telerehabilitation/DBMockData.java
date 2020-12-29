@@ -34,17 +34,31 @@ public class DBMockData {
     @EventListener(ApplicationReadyEvent.class)
     public void dbOperations() {
 
-//        Exercise exercise3 = new Exercise("Strengthen your Knee",
-//                "1. Put a rolled towel under you thigh so that your foot is off the floor. Straighten your knee and then slowly\n" +
-//                        "allow it to bend. As you straighten\n",
-//                "/images/ex1.png");
+//        Exercise exercise1 = new Exercise("Strengthen your Knee",
+//                " ",
+//                "/images/ex1.PNG");
 //
-//        Exercise exercise4 = new Exercise("Balance while Sitting",
-//                "1. Sit on the side of the bed\n" +
-//                        "with your feet on the\n" ,
-//                "/images/ex2.png");
+//        Exercise exercise2 = new Exercise("Balance while Sitting", "", "/images/ex2.PNG");
+//        Exercise exercise3 = new Exercise("Rolling onto your Side in Bed", "", "/images/ex3.PNG");
+//        Exercise exercise4 = new Exercise("Strengthen your Ankle", "", "/images/ex4.PNG");
+//        Exercise exercise5 = new Exercise("Moving from Lying to Sitting on the Side of the Bed", "", "/images/ex5.PNG");
+//        Exercise exercise6 = new Exercise("Moving From Sitting on the Side of the Bed to Lying Down", "", "/images/ex6.PNG");
+//        Exercise exercise7 = new Exercise("Exercise while Sitting 1", "", "/images/ex7.PNG");
+//        Exercise exercise8 = new Exercise("Exercise while Sitting 2", "", "/images/ex8.PNG");
+//        Exercise exercise9 = new Exercise("Stand Up from a Bed or Chair without help", "", "/images/ex9.PNG");
+//        Exercise exercise10 = new Exercise("Stand Up from a Bed or Chair with help", "", "/images/ex10.PNG");
+//
+//        exerciseRepo.save(exercise1);
+//        exerciseRepo.save(exercise2);
 //        exerciseRepo.save(exercise3);
 //        exerciseRepo.save(exercise4);
+//        exerciseRepo.save(exercise5);
+//        exerciseRepo.save(exercise6);
+//        exerciseRepo.save(exercise7);
+//        exerciseRepo.save(exercise8);
+//        exerciseRepo.save(exercise9);
+//        exerciseRepo.save(exercise10);
+
 //
 //        Set<Exercise> exerciseSet2 = new HashSet<>() {
 //            {
@@ -69,9 +83,6 @@ public class DBMockData {
 //            System.out.println("Database has already filled");
 //            return;
 //        }
-// nalezy dodać plik sql ktory automatycznie wypelni przykladowe dane (szczegolnie cwiczenia!)
-
-
 
     }
 }
