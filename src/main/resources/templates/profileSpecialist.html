@@ -83,9 +83,9 @@
             <ul th:each="p : ${patients}" class="tabs clearfix filters-button-group">
 
                 <li>
-                    <a th:href="@{/{id}(id=${p.getId()})}" class="active">
+                    <a th:href="@{/{email}(email=${p.getEmail()})}" class="active">
                         <div class="tm-tab-icon"></div>
-                        [[${p.getId()}]]. [[${p.getName()}]] [[${p.getSurname()}]]
+                        [[${p.getName()}]] [[${p.getSurname()}]]
                     </a>
                 </li>
 
@@ -121,12 +121,12 @@
         </div>
 
 
-        <div class="tm-page-col-right" th:if="${patient.getId()}!=null">
+        <div class="tm-page-col-right" th:if="${patient.getEmail()}!=null">
             <table class="table table-hover">
                 <thead>
                 <tr class="table-info">
-                    <th scope="col">ID</th>
-                    <th th:text="${patient.getId()}"></th>
+                    <th scope="col">Name and surname</th>
+                    <th>[[${patient.getName()}]] [[${patient.getSurname()}]]</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -231,7 +231,7 @@
                     <strong th:text="${e.getName()}"></strong><br>
                     <img th:src="${e.getVisualRepresentation()}" alt="photo" th:width="700">
                 </li>
-                <form th:action="@{/deleteExercise/{id}(id=${e.getId()})}">
+                <form th:action="@{/deleteExercise/{name}(name=${e.getName()})}">
                     <button type="submit" class="btn btn-danger"
                             onClick="return confirm('Are you sure you want to delete this exercise?')">Delete
                     </button>

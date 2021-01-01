@@ -7,7 +7,9 @@ import edu.ib.telerehabilitation.model.Specialist;
 
 public interface UserService {
 
-    void addUser(UserDTO userDTO);
+    Boolean addUser(UserDTO userDTO);
 
-    Boolean checkIfUserExists(String email, String password, String role);
+    Boolean checkIfUserExists(UserDTO userDTO);
+
+    //UserDTO getUserIfExists(UserDTO userDTO);
 }

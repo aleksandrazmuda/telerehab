@@ -1,10 +1,10 @@
 package edu.ib.telerehabilitation.controller;
 
+import edu.ib.telerehabilitation.datatransferobject.PatientDTO;
 import edu.ib.telerehabilitation.datatransferobject.Role;
-import edu.ib.telerehabilitation.model.Exercise;
-import edu.ib.telerehabilitation.model.Frequency;
-import edu.ib.telerehabilitation.model.Patient;
-import edu.ib.telerehabilitation.model.Specialist;
+import edu.ib.telerehabilitation.datatransferobject.SpecialistDTO;
+import edu.ib.telerehabilitation.datatransferobject.UserDTO;
+import edu.ib.telerehabilitation.model.*;
 import edu.ib.telerehabilitation.service.ExerciseService;
 import edu.ib.telerehabilitation.service.PatientService;
 import edu.ib.telerehabilitation.service.SpecialistService;
@@ -28,9 +28,9 @@ public class UserController {
     private SpecialistService specialistService;
     private PatientService patientService;
     private ExerciseService exerciseService;
-    Specialist currentSpecialist;
-    Patient currentPatient;
-    Long idClicked;
+    UserDTO currentSpecialist;
+    UserDTO currentPatient;
+    UserDTO patientClicked;
 
     @Autowired
     public UserController(SpecialistService specialistService, PatientService patientService, ExerciseService exerciseService) {
@@ -41,183 +41,164 @@ public class UserController {
 
 
     @RequestMapping("/log")
-    public String loginUser(@RequestParam(value = "email") String email,
-                            @RequestParam(value = "password") String password,
-                            @RequestParam(value = "role") Role role,
-                            Model model,
-                            RedirectAttributes redirAttrs) {
+    public String loginUser(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password,
+                            @RequestParam(value = "role") Role role, Model model, RedirectAttributes attributes) {
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(email);
+        userDTO.setPassword(password);
         if (role == Role.PATIENT) {
-            if (patientService.checkIfUserExists(email, password, role.toString())) {
-                return getDataProfilePatient(email, model);
+            if (patientService.checkIfUserExists(userDTO)) {
+                currentPatient = userDTO;
+                return getDataProfilePatient(currentPatient, model);
             }
         } else {
-            if (specialistService.checkIfUserExists(email, password, role.toString())) {
-                return getDataProfileSpecialist(email, model, new Patient());
+            if (specialistService.checkIfUserExists(userDTO)) {
+                currentSpecialist = userDTO;
+                return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
             }
         }
-        redirAttrs.addFlashAttribute("error", "Try again! You provided wrong e-mail, password or role.");
+
+        attributes.addFlashAttribute("error", "Try again! You provided wrong e-mail, password or role.");
         return "redirect:/";
     }
 
-
     @RequestMapping("/findPatient")
     public String findAndAddPatient(@RequestParam(value = "email") String email, Model model) {
-        Patient patient = patientService.findByEmail(email);
-        if (patient != null && patient.getSpecialist() == null) {
-            patientService.updateSpecialist(patient.getId(), currentSpecialist);
+        UserDTO patientDTO = new UserDTO();
+        patientDTO.setEmail(email);
+        if (patientService.updateSpecialist(patientDTO, currentSpecialist)) {
             model.addAttribute("success", "You have successfully added a new patient.");
         } else {
             model.addAttribute("error", "There's no such patient as " + email + ". Make sure you have a valid e-mail or the patient has no other doctor.");
         }
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, new Patient());
+        return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
     }
 
 
-    @RequestMapping("/{id}")
-    public String showPatient(@PathVariable Long id, Model model) {
-        idClicked = id;
-        Patient patient = getPatientIfExists(idClicked);
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, patient);
+    @RequestMapping("/{email}")
+    public String showPatient(@PathVariable String email, Model model) {
+        UserDTO patient = new UserDTO();
+        patient.setEmail(email);
+        if (patientService.checkIfUserExistsByEmail(patient)) {
+            patientClicked = patient;
+            return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
+        } else
+            return "error";
     }
 
+    @RequestMapping("/updateFrequency")
+    public String changeFreq(@RequestParam(value = "frequencyChosen") Frequency newFrequency, Model model) {
+        if (patientService.updateFrequency(patientClicked, newFrequency)) {
+            return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
+        }
+        return "error";
+    }
+
+    @RequestMapping("/opinion")
+    public String updateOpinion(@RequestParam(value = "opinion") String opinion, Model model) {
+        if (patientService.updateResultsDescription(patientClicked, opinion)) {
+            return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
+        }
+        return "error";
+    }
+
+    @RequestMapping("/addNewExercise")
+    public String addExercise(@RequestParam(value = "exerciseChosen") String newExercise, Model model) {
+        if (exerciseService.updateExercises(patientClicked, newExercise)) {
+            return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
+        }
+        return "error";
+    }
+
+    @RequestMapping("/deleteExercise/{name}")
+    public String deleteExercise(@PathVariable String name, Model model) {
+        if (exerciseService.updateExercisesDelete(patientClicked, name)) {
+            return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
+        }
+        return "error";
+    }
 
     @RequestMapping("/aboutPatient")
     public String seeAboutPatient(Model model) {
-        model.addAttribute("currentPatient", currentPatient);
-        return "aboutPatient";
+        if (patientService.checkIfUserExistsByEmail(currentPatient)) {
+            PatientDTO patientDTO = patientService.getPatientIfExists(currentPatient);
+            model.addAttribute("currentPatient", patientDTO);
+            return "aboutPatient";
+        }
+        return "error";
     }
 
 
     @RequestMapping("/aboutSpecialist")
     public String seeAboutSpecialist(Model model) {
-        model.addAttribute("currentSpecialist", currentSpecialist);
-        return "aboutSpecialist";
+        if (specialistService.checkIfUserExistsByEmail(currentSpecialist)) {
+            SpecialistDTO specialistDTO = specialistService.getSpecialistIfExists(currentSpecialist);
+            model.addAttribute("currentSpecialist", specialistDTO);
+            return "aboutSpecialist";
+        }
+        return "error";
     }
-
 
     @RequestMapping("/profileSpecialist")
     public String seeProfileSpecialist(Model model) {
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, new Patient());
+        return getDataProfileSpecialist(currentSpecialist, model, patientClicked);
     }
-
 
     @RequestMapping("/profilePatient")
     public String seeProfilePatient(Model model) {
-        return getDataProfilePatient(currentPatient.getEmail(), model);
+        return getDataProfilePatient(currentPatient, model);
     }
 
-    @RequestMapping("/addNewExercise")
-    public String addExercise(@RequestParam(value = "exerciseChosen") String newExercise, Model model) {
-        Exercise exercise = exerciseService.findByName(newExercise);
-        patientService.updateExercises(idClicked, exercise);
-        Patient patient = getPatientIfExists(idClicked);
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, patient);
-    }
-
-
-    @RequestMapping("/deleteExercise/{id}")
-    public String deleteExercise(@PathVariable Long id, Model model) {
-
-        Optional<Exercise> exerciseOptional = exerciseService.findById(id);
-        Exercise exercise = null;
-        if (exerciseOptional.isPresent()) {
-            exercise = exerciseOptional.get();
-
-        } else {
-            System.out.println("No exercise with that id");
-        }
-
-        patientService.updateExercisesDelete(idClicked, exercise);
-        Patient patient = getPatientIfExists(idClicked);
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, patient);
-    }
-
-
-    @RequestMapping("/updateFrequency")
-    public String changeFreq(@RequestParam(value = "frequencyChosen") Frequency newFrequency, Model model) {
-        patientService.updateFrequency(idClicked, newFrequency);
-        Patient patient = getPatientIfExists(idClicked);
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, patient);
-    }
 
     @RequestMapping("/call")
     public String goToWebRTC(Model model) {
         return "rtc";
     }
 
-
     @RequestMapping("/trainingDone")
     public String trainingDoneAddDate(Model model) {
-        patientService.updateTrainingDates(currentPatient.getId(), LocalDate.now());
-        model.addAttribute("success", "You successfully informed about the training done.");
-        return getDataProfilePatient(currentPatient.getEmail(), model);
-    }
-
-    @RequestMapping("/opinion")
-    public String updateOpinion(@RequestParam(value = "opinion") String opinion, Model model) {
-        patientService.updateResultsDescription(idClicked, opinion);
-        Patient patient = getPatientIfExists(idClicked);
-        return getDataProfileSpecialist(currentSpecialist.getEmail(), model, patient);
-    }
-
-
-    public String getDataProfilePatient(String email, Model model) {
-        currentPatient = patientService.findByEmail(email);
-        List<Exercise> exercises = new ArrayList<>();
-        for (Exercise e : exerciseService.findAll()
-        ) {
-            if (currentPatient.getExercises().contains(e)) {
-                exercises.add(e);
-            }
+        if (patientService.updateTrainingDates(currentPatient, LocalDate.now())) {
+            model.addAttribute("success", "You successfully informed about the training done.");
+            return getDataProfilePatient(currentPatient, model);
         }
-        model.addAttribute("exercises", exercises);
-        model.addAttribute("currentPatient", currentPatient);
-        return "profilePatient";
+        return "error";
     }
 
 
-    public String getDataProfileSpecialist(String email, Model model, Patient patientClicked) {
-        currentSpecialist = specialistService.findByEmail(email);
-        List<Patient> patients = new ArrayList<>();
-        for (Patient p : patientService.findAll()) {
-            if (p.getSpecialist() == currentSpecialist) {
-                patients.add(p);
-            }
+    public String getDataProfilePatient(UserDTO userDTO, Model model) {
+        if (patientService.checkIfUserExistsByEmail(currentPatient)) {
+            PatientDTO patientDTO = patientService.getPatientIfExists(userDTO);
+            List<Exercise> exercises = exerciseService.findExercisesOfPatient(userDTO);
+            model.addAttribute("exercises", exercises);
+            model.addAttribute("currentPatient", patientDTO);
+            return "profilePatient";
+        }
+        return "error";
+    }
+
+    public String getDataProfileSpecialist(UserDTO userDTOSpecialist, Model model, UserDTO patientClicked) {
+        SpecialistDTO specialist = specialistService.getSpecialistIfExists(userDTOSpecialist);
+        List<Patient> patients = specialistService.findPatientsOfSpecialist(userDTOSpecialist);
+        List<Exercise> exercisesAll = new ArrayList<>();
+        List<Exercise> exercises = new ArrayList<>();
+        PatientDTO patient = new PatientDTO();
+
+        if (patientClicked != null) {
+            patient = patientService.getPatientIfExists(patientClicked);
+            exercisesAll = exerciseService.getExercisesAll(patientClicked);
+            exercises = exerciseService.findExercisesOfPatient(patientClicked);
         }
 
         List<Frequency> frequenciesAll = new ArrayList<>(Arrays.asList(Frequency.values()));
-
-        List<Exercise> exercisesAll = new ArrayList<>();
-        List<Exercise> exercises = new ArrayList<>();
-        if (patientClicked != null && patientClicked.getExercises() != null) {
-            exercisesAll = (List<Exercise>) exerciseService.findAll();
-            patientClicked = patientService.findByEmail(patientClicked.getEmail());
-            for (Exercise e : exerciseService.findAll()) {
-                if (patientClicked.getExercises().contains(e)) {
-                    exercises.add(e);
-                    exercisesAll.remove(e);
-                }
-            }
-        }
 
         model.addAttribute("frequencyList", frequenciesAll);
         model.addAttribute("exerciseList", exercisesAll);
         model.addAttribute("exercises", exercises);
         model.addAttribute("patients", patients);
-        model.addAttribute("patient", patientClicked);
-        model.addAttribute("currentSpecialist", currentSpecialist);
+        model.addAttribute("patient", patient);
+        model.addAttribute("currentSpecialist", specialist);
         return "profileSpecialist";
     }
 
-
-    public Patient getPatientIfExists(Long id) {
-        Optional<Patient> patientOptional = patientService.findById(id);
-        Patient patient = null;
-        if (patientOptional.isPresent()) {
-            patient = patientOptional.get();
-        } else {
-            System.out.println("No patient with that id");
-        }
-        return patient;
-    }
 }

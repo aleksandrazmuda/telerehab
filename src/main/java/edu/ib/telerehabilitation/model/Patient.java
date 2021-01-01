@@ -7,42 +7,29 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Patient {
+public class Patient extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinTable(name = "patient_specialist", joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "specialist_id"))
     private Specialist specialist;
-
     @ManyToMany
     @JoinTable(name = "patient_exercise", joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private Set<Exercise> exercises;
-
-    private String email;
-    private String userName;
-    private String name;
-    private String surname;
-    private String phoneNumber;
-    private String password;
     private Frequency frequency;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<LocalDate> trainingDates = new ArrayList<LocalDate>();
     private String resultsDescription;
 
-    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname, String phoneNumber, String password, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
+    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname,
+                   String phoneNumber, String password, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
+        super(email, userName, name, surname, phoneNumber, password);
         this.specialist = specialist;
         this.exercises = exercises;
-        this.email = email;
-        this.userName = userName;
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
         this.frequency = frequency;
         this.trainingDates = trainingDates;
         this.resultsDescription = resultsDescription;
@@ -75,46 +62,6 @@ public class Patient {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public Frequency getFrequency() {
         return frequency;
     }
@@ -139,28 +86,17 @@ public class Patient {
         this.resultsDescription = resultsDescription;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
         return "Patient{" +
                 "id=" + id +
                 ", specialist=" + specialist +
                 ", exercises=" + exercises +
-                ", email='" + email + '\'' +
-                ", userName='" + userName + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                super.toString() +
                 ", frequency=" + frequency +
                 ", trainingDates=" + trainingDates +
                 ", resultsDescription='" + resultsDescription + '\'' +
                 '}';
     }
+
 }

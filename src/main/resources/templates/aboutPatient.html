@@ -84,19 +84,11 @@
         <table class="table table-hover">
             <thead>
             <tr class="table-info">
-                <th scope="col">ID</th>
-                <th th:text="${currentPatient.getId()}"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
                 <th scope="col">Name and surname</th>
                 <th>[[${currentPatient.getName()}]] [[${currentPatient.getSurname()}]]</th>
             </tr>
-            <tr>
-                <th scope="col">Username</th>
-                <th th:text="${currentPatient.getUserName()}"></th>
-            </tr>
+            </thead>
+            <tbody>
             <tr>
                 <th scope="col">Phone number</th>
                 <th th:text="${currentPatient.getPhoneNumber()}"></th>
