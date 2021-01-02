@@ -25,7 +25,7 @@ public class SocketHandler extends TextWebSocketHandler {
         }
     }
 
-    //we add the received session to a list of s essions so that we can keep track of all the clients
+    //we add the received session to a list of sessions so that we can keep track of all the clients
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);

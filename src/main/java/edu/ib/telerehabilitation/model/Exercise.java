@@ -13,12 +13,10 @@ public class Exercise {
     private Long id;
 
     private String name;
-    private String description;
     private String visualRepresentation;
 
-    public Exercise(String name, String description, String visualRepresentation) {
+    public Exercise(String name, String visualRepresentation) {
         this.name = name;
-        this.description = description;
         this.visualRepresentation = visualRepresentation;
     }
 
@@ -41,14 +39,6 @@ public class Exercise {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getVisualRepresentation() {
         return visualRepresentation;
     }
@@ -62,7 +52,6 @@ public class Exercise {
         return "Exercise{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", visualRepresentation='" + visualRepresentation + '\'' +
                 '}';
     }
