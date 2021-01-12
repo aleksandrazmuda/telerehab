@@ -6,7 +6,7 @@
 //     conn.send(JSON.stringify(message));
 // }
 //
-// //konfugurowanie kanału RTCPeerConnection
+// //konfigurowanie kanału RTCPeerConnection
 // //tu ustawiamy obiekt i włączamy kanał danych (przekazując true)
 // var peerConnection = new RTCPeerConnection(configuration, {
 //     optional : [ {

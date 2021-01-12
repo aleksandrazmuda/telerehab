@@ -153,8 +153,12 @@
                 </tr>
                 <tr>
                     <th scope="col">Audio/video chat</th>
-                    <th><a th:href="@{/call}">
-                        <button value="call" class="btn btn-info">
+                    <th><a th:href="@{/callPatient}">
+                        <div class="form-group">
+                            <input type="hidden" th:name="username"
+                                   th:value="${patientClicked.getUserName()}"/>
+                        </div>
+                        <button type="submit" value="call" class="btn btn-info">
                             Call now
                         </button>
                     </a>

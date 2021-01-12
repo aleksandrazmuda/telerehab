@@ -3,6 +3,8 @@ package edu.ib.telerehabilitation.controller;
 import edu.ib.telerehabilitation.datatransferobject.UserDTO;
 import edu.ib.telerehabilitation.model.Frequency;
 import edu.ib.telerehabilitation.service.SpecialistProfileService;
+import edu.ib.telerehabilitation.service.SupportService;
+import edu.ib.telerehabilitation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,14 @@ public class SpecialistController {
 
 
     private SpecialistProfileService specialistProfileService;
+    private SupportService supportService;
+    private UserService userService;
 
     @Autowired
-    public SpecialistController(SpecialistProfileService specialistProfileService) {
+    public SpecialistController(SpecialistProfileService specialistProfileService, SupportService supportService, UserService userService) {
         this.specialistProfileService = specialistProfileService;
+        this.supportService = supportService;
+        this.userService = userService;
     }
 
     @RequestMapping("/findPatient")
@@ -105,5 +111,14 @@ public class SpecialistController {
         specialistProfileService.getDataToProfileSpecialist(model, authentication, null);
         return "aboutSpecialist";
     }
+
+
+    @RequestMapping("/callPatient")
+    public String call(@ModelAttribute("username") String username,
+                       Model model, Authentication authentication) {
+        //supportService.getPatientIfIsInCollection(userService.getCurrentUser(authentication), username);
+        return "rtc";
+    }
+
 
 }
