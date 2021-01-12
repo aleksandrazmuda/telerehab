@@ -1,4 +1,4 @@
-package edu.ib.telerehabilitation;
+package edu.ib.telerehabilitation.configWebrtc;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

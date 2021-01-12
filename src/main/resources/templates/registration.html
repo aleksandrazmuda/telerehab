@@ -71,58 +71,59 @@
                     <div class="alert alert-danger alert-dismissible" onclose="" role="alert" th:text="${error}"
                          th:if="${error}"></div>
                 </div>
-                <form th:action="@{/addUser}" th:object="${newUserDTO}" th:method="GET">
-                    <div class="container-fluid">
-                        <div class=raw>
-                            <fieldset>
-                                <legend>Registration form</legend>
-                                <div class="form-group">
 
-                                    <label class="col-form-label" for="inputDefault1">E-mail</label>
-                                    <input required type="email" size=80 th:field="*{email}" name="email"
-                                           class="form-control"
-                                           placeholder="Enter e-mail address" id="inputDefault1">
+                <form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/registration}">
+                    <h2 class="form-signin-heading">Create your account</h2>
+                    <div class="form-group"></div>
 
-                                    <label class="col-form-label" for="inputDefault2">Username</label>
-                                    <input required type="text" name="username" th:field="*{userName}"
-                                           class="form-control"
-                                           placeholder="Enter username" id="inputDefault2">
-
-                                    <label class="col-form-label" for="inputDefault3">Name</label>
-                                    <input required type="text" name="name" th:field="*{name}" class="form-control"
-                                           placeholder="Enter name" id="inputDefault3">
-
-                                    <label class="col-form-label" for="inputDefault5">Surname</label>
-                                    <input required type="text" name="surname" th:field="*{surname}"
-                                           class="form-control"
-                                           placeholder="Enter surname" id="inputDefault5">
-
-                                    <label class="col-form-label" for="inputDefault6">Phone number </label>
-                                    <input required type="tel" name="phone" th:field="*{phoneNumber}"
-                                           class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
-                                           placeholder="Format: 123-456-789" id="inputDefault6">
-
-
-
-                                    <label class="col-form-label" for="inputDefault4">Password</label>
-                                    <input required type="password" minlength="6" name="password" th:field="*{password}"
-                                           class="form-control"
-                                           placeholder="Enter password" id="inputDefault4">
-
-                                    <label class="col-form-label" for="inputDefault8">Choose your role</label>
-                                    <select class="form-control" th:field="*{role}" id="inputDefault8">
-                                        <option value="PATIENT">PATIENT</option>
-                                        <option value="SPECIALIST">SPECIALIST</option>
-                                    </select>
-                                </div>
-
-                                <div class="row form-group"></div>
-
-                                <button type="submit" value="add new user" class="btn btn-info">Sign up
-                                </button>
-                            </fieldset>
-                        </div>
+                    <div class="form-group">
+                        <input type="email" th:field="*{email}" class="form-control" placeholder="E-mail"
+                               autofocus="true">
                     </div>
+
+                    <div class="form-group">
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="Name"
+                               autofocus="true">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" th:field="*{surname}" class="form-control" placeholder="Surname"
+                               autofocus="true">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" th:field="*{userName}" class="form-control" placeholder="Username"
+                               autofocus="true">
+                        <span class="has-error" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
+                        <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" th:field="*{passwordConfirm}" class="form-control"
+                               placeholder="Confirm your password">
+                        <span class="has-error" th:if="${#fields.hasErrors('passwordConfirm')}"
+                              th:errors="*{passwordConfirm}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input required type="tel" name="phone" th:field="*{phoneNumber}"
+                               class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
+                               placeholder="Phone number format: 123-456-789">
+
+                    </div>
+
+                    <div class="form-group">
+                        <select class="form-control" th:field="*{role}">-->
+                            <option value="PATIENT">PATIENT</option>
+                            <option value="SPECIALIST">SPECIALIST</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-info" type="submit">Sign up</button>
                 </form>
 
             </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
     <title>Profile</title>
@@ -37,8 +37,8 @@
                         <ul class="navbar-nav ml-auto mr-0">
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
-                                <a class="nav-link" th:href="@{/profileSpecialist}"
-                                >Profile  </a
+                                <a class="nav-link" th:href="@{/welcome}"
+                                >Profile </a
                                 >
                             </li>
                             <li class="nav-item active">
@@ -50,9 +50,13 @@
                             </li>
                             <li class="nav-item">
                                 <div class="tm-nav-link-highlight"></div>
-                                <a class="nav-link" th:href="@{/}"
-                                >Log out </a
-                                >
+                                <div class="nav-link" sec:authorize="isAuthenticated()">
+                                    <form id="logoutForm" method="POST" th:action="@{/logout}">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    </form>
+                                    <span sec:authentication="name"></span><a
+                                        onclick="document.forms['logoutForm'].submit()">Logout</a>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -80,32 +84,32 @@
 <section class="row tm-pt-4">
     <div class="col-12 tm-page-cols-container">
 
-            <table class="table table-hover">
-                <thead>
-                <tr class="table-info">
-                    <th scope="col">Name and surname</th>
-                    <th>[[${currentSpecialist.getName()}]] [[${currentSpecialist.getSurname()}]]</th>
-                </tr>
-                </thead>
-                <tbody>
+        <table class="table table-hover">
+            <thead>
+            <tr class="table-info">
+                <th scope="col">Name and surname</th>
+                <th>[[${currentSpecialist.getName()}]] [[${currentSpecialist.getSurname()}]]</th>
+            </tr>
+            </thead>
+            <tbody>
 
-                <tr>
-                    <th scope="col">Username</th>
-                    <th th:text="${currentSpecialist.getUserName()}"></th>
-                </tr>
-                <tr>
-                    <th scope="col">Phone number</th>
-                    <th th:text="${currentSpecialist.getPhoneNumber()}"></th>
-                </tr>
-                <tr>
-                    <th scope="col">E-mail</th>
-                    <th th:text="${currentSpecialist.getEmail()}"></th>
-                </tr>
+            <tr>
+                <th scope="col">Username</th>
+                <th th:text="${currentSpecialist.getUserName()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">Phone number</th>
+                <th th:text="${currentSpecialist.getPhoneNumber()}"></th>
+            </tr>
+            <tr>
+                <th scope="col">E-mail</th>
+                <th th:text="${currentSpecialist.getEmail()}"></th>
+            </tr>
 
-                </tbody>
-            </table>
+            </tbody>
+        </table>
 
-        </div>
+    </div>
 </section>
 
 

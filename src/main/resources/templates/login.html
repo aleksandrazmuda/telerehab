@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>TELEREHAB</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600"/>
+    <link rel="stylesheet" href="css/all.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/templatemo-style.css"/>
+    <link rel="icon" th:href="@{images/logo.png}" type="image/x-icon"/>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row tm-brand-row">
+        <div class="col-lg-4 col-10">
+            <div class="tm-brand-container">
+                <div class="tm-brand-texts">
+                    <h1 class="text-uppercase tm-brand-name">TeleRehab</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-2 tm-nav-col">
+            <div class="tm-nav">
+                <nav class="navbar navbar-expand-lg navbar-light tm-navbar">
+                    <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarNav"
+                            aria-controls="navbarNav"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto mr-0">
+                            <li class="nav-item active">
+                                <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" href="#"
+                                >Home <span class="sr-only">(current)</span></a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" href="contact.html">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" th:href="@{/registration}">Sign up</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row tm-welcome-row">
+    <div class="col-12 tm-page-cols-container">
+        <div class="tm-page-col-left tm-welcome-box tm-bg-primary">
+            <p class="tm-welcome-text">
+                <em>"Hello, TELEREHAB is a platform that supports remote rehabilitation at home of people who have
+                    suffered a stroke."</em>
+            </p>
+        </div>
+        <div class="tm-page-col-right">
+            <div
+                    class="tm-welcome-parallax tm-center-child"
+                    data-parallax="scroll"
+                    data-image-src="images/blooming-bg.jpg"
+            >
+                <div class="tm-bg-black-transparent tm-parallax-overlay">
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible" onclose="" role="alert" th:text="${error}"
+                             th:if="${error}"></div>
+                    </div>
+                    <div class="container">
+                        <div class="alert alert-success alert-dismissible" onclose="" role="alert" th:text="${message}"
+                             th:if="${message}"></div>
+                    </div>
+
+                    <form class="form-signin" method="POST" th:action="@{/login}">
+                        <div class="container-fluid">
+                            <div class=raw>
+                                <fieldset>
+
+                                    <legend>Log in form</legend>
+                                    <div class="row form-group"></div>
+
+                                    <div class="form-group">
+                                        <input name="username" type="text" class="form-control" placeholder="Username"
+                                               autofocus="true"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input name="password" type="password" class="form-control"
+                                               placeholder="Password"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    </div>
+
+                                    <button class="btn btn-info" type="submit">Log In</button>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="tm-text-secondary tm-mb-5">
+        About application
+    </h2>
+    <p class="tm-mb-6">
+        Post-stroke patients require systematic rehabilitation to regain physical mobility and be able to
+        function independently.
+        <strong> TEREHAB </strong> makes it possible to get good results from home, which is especially
+        important
+        in the face of a global pandemic.
+    </p>
+    <p class="mb-0">
+        The application enables the patient to communicate with a specialist via an audio-video system.
+        A specialist can create an individual training plan for each patient, using the database of available
+        exercises.
+        Moreover, the therapist can save notes on the results obtained, monitor the frequency of exercise or
+        change the patient's training plan on an ongoing basis.
+    </p>
+</div>
+
+<div class="row form-group"></div>
+<div class="row form-group"></div>
+<footer class="contact">
+    <div class="container-fluid">
+        <img src="/images/logo.png" alt="logo" th:width="45" th:height="45">
+        <address class="contact-info">TELEREHAB,
+            telerehab@app.com.pl
+        </address>
+    </div>
+</footer>
+<div class="row form-group"></div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

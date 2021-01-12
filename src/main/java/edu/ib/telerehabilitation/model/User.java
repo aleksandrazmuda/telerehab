@@ -1,6 +1,9 @@
 package edu.ib.telerehabilitation.model;
 
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import java.util.Set;
 
 @MappedSuperclass
 public class User {
@@ -12,16 +15,22 @@ public class User {
     private String phoneNumber;
     private String password;
 
+    @Transient
+    private String passwordConfirm;
+    private String role;
+
     public User() {
     }
 
-    public User(String email, String userName, String name, String surname, String phoneNumber, String password) {
+    public User(String email, String userName, String name, String surname, String phoneNumber, String password, String passwordConfirm, String role) {
         this.email = email;
         this.userName = userName;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.role = role;
     }
 
     public String getEmail() {
@@ -72,6 +81,23 @@ public class User {
         this.password = password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -81,6 +107,8 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
+                ", passwordConfirm='" + passwordConfirm + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

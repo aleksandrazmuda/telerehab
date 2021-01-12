@@ -9,18 +9,20 @@ public class UserDTO {
     private String surname;
     private String phoneNumber;
     private String password;
-    private Role role;
+    private String passwordConfirm;
+    private String role;
 
     public UserDTO() {
     }
 
-    public UserDTO(String email, String userName, String name, String surname, String phoneNumber, String password, Role role) {
+    public UserDTO(String email, String userName, String name, String surname, String phoneNumber, String password, String passwordConfirm, String role) {
         this.email = email;
         this.userName = userName;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.passwordConfirm = passwordConfirm;
         this.role = role;
     }
 
@@ -72,12 +74,21 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
+    }
+
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     @Override

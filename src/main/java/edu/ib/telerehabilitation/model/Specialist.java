@@ -9,12 +9,11 @@ public class Specialist extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Specialist(String email, String userName, String name, String surname, String phoneNumber, String password) {
-        super(email, userName, name, surname, phoneNumber, password);
+    public Specialist() {
     }
 
-    public Specialist() {
-        super();
+    public Specialist(String email, String userName, String name, String surname, String phoneNumber, String password, String passwordConfirm, String role) {
+        super(email, userName, name, surname, phoneNumber, password, passwordConfirm, role);
     }
 
     public Long getId() {

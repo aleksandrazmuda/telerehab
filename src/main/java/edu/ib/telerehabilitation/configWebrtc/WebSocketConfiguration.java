@@ -1,4 +1,4 @@
-package edu.ib.telerehabilitation;
+package edu.ib.telerehabilitation.configWebrtc;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

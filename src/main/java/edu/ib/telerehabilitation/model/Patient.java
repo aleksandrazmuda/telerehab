@@ -25,17 +25,11 @@ public class Patient extends User {
     private List<LocalDate> trainingDates = new ArrayList<LocalDate>();
     private String resultsDescription;
 
-    public Patient(Specialist specialist, Set<Exercise> exercises, String email, String userName, String name, String surname,
-                   String phoneNumber, String password, Frequency frequency, List<LocalDate> trainingDates, String resultsDescription) {
-        super(email, userName, name, surname, phoneNumber, password);
-        this.specialist = specialist;
-        this.exercises = exercises;
-        this.frequency = frequency;
-        this.trainingDates = trainingDates;
-        this.resultsDescription = resultsDescription;
+    public Patient() {
     }
 
-    public Patient() {
+    public Patient(String email, String userName, String name, String surname, String phoneNumber, String password, String passwordConfirm, String role) {
+        super(email, userName, name, surname, phoneNumber, password, passwordConfirm, role);
     }
 
     public Specialist getSpecialist() {
