@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ValidationUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,28 +29,34 @@ public class UserServiceImpl implements UserService {
 
     // PU Zarejestruj się
     @Override
-    public void addUser(UserDTO userDTO) {
-        if (userDTO.getRole().equals("PATIENT")) {
-            Patient patient = new Patient();
-            patient.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-            patient.setRole(userDTO.getRole());
-            patient.setUserName(userDTO.getUserName());
-            patient.setPhoneNumber(userDTO.getPhoneNumber());
-            patient.setEmail(userDTO.getEmail());
-            patient.setName(userDTO.getName());
-            patient.setSurname(userDTO.getSurname());;
-            patientRepo.save(patient);
+    public Boolean addUser(UserDTO userDTO) {
 
-        } else if (userDTO.getRole().equals("SPECIALIST")) {
-            Specialist specialist = new Specialist();
-            specialist.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-            specialist.setRole(userDTO.getRole());
-            specialist.setUserName(userDTO.getUserName());
-            specialist.setPhoneNumber(userDTO.getPhoneNumber());
-            specialist.setEmail(userDTO.getEmail());
-            specialist.setName(userDTO.getName());
-            specialist.setSurname(userDTO.getSurname());
-            specialistRepo.save(specialist);
+        if (findByUsername(userDTO.getUserName()) != null) {
+            return false;
+        } else {
+            if (userDTO.getRole().equals("PATIENT")) {
+                Patient patient = new Patient();
+                patient.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+                patient.setRole(userDTO.getRole());
+                patient.setUserName(userDTO.getUserName());
+                patient.setPhoneNumber(userDTO.getPhoneNumber());
+                patient.setEmail(userDTO.getEmail());
+                patient.setName(userDTO.getName());
+                patient.setSurname(userDTO.getSurname());
+                patientRepo.save(patient);
+
+            } else if (userDTO.getRole().equals("SPECIALIST")) {
+                Specialist specialist = new Specialist();
+                specialist.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+                specialist.setRole(userDTO.getRole());
+                specialist.setUserName(userDTO.getUserName());
+                specialist.setPhoneNumber(userDTO.getPhoneNumber());
+                specialist.setEmail(userDTO.getEmail());
+                specialist.setName(userDTO.getName());
+                specialist.setSurname(userDTO.getSurname());
+                specialistRepo.save(specialist);
+            }
+            return true;
         }
     }
 
@@ -57,20 +64,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser(Authentication authentication) {
         UserDetails currentUserDetails = (authentication == null) ? null : (UserDetails) authentication.getPrincipal();
-        User user = new User();
-
+        User currentUser = new User();
         if (currentUserDetails != null) {
-            User currentUser = findByUsername(currentUserDetails.getUsername());
-            //builder
-            user.setEmail(currentUser.getEmail());
-            user.setName(currentUser.getName());
-            user.setSurname(currentUser.getSurname());
-            user.setUserName(currentUser.getUserName());
-            user.setRole(currentUser.getRole());
-            user.setPhoneNumber(currentUser.getPhoneNumber());
+            currentUser = findByUsername(currentUserDetails.getUsername());
         }
-
-        return user;
+        return currentUser;
     }
 
 

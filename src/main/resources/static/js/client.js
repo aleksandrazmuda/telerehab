@@ -129,7 +129,7 @@
 // };
 
 
-//WERSJA 2 - PROSTY PROGRAM (nie działa, przeanalizować)
+//WERSJA 2 - PROSTY PROGRAM (nie działa)
 //connecting to our signaling server
 var conn = new WebSocket('ws://localhost:8080/socket');
 

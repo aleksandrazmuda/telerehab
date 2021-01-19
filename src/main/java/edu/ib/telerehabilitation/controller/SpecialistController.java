@@ -1,6 +1,7 @@
 package edu.ib.telerehabilitation.controller;
 
-import edu.ib.telerehabilitation.datatransferobject.UserDTO;
+import edu.ib.telerehabilitation.datatransferobject.*;
+
 import edu.ib.telerehabilitation.model.Frequency;
 import edu.ib.telerehabilitation.service.SpecialistProfileService;
 import edu.ib.telerehabilitation.service.SupportService;
@@ -14,41 +15,43 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 public class SpecialistController {
 
-
     private SpecialistProfileService specialistProfileService;
-    private SupportService supportService;
-    private UserService userService;
 
     @Autowired
     public SpecialistController(SpecialistProfileService specialistProfileService, SupportService supportService, UserService userService) {
         this.specialistProfileService = specialistProfileService;
-        this.supportService = supportService;
-        this.userService = userService;
     }
+
 
     @RequestMapping("/findPatient")
     public String findAndAddPatient(@RequestParam(value = "username") String username, Model model, Authentication authentication) {
-
-        UserDTO patientDTO = new UserDTO();
-        patientDTO.setUserName(username);
-        if (specialistProfileService.addPatientToTheCollectionOfSpecialist(patientDTO, authentication)) {
+        SpecialistDTO specialistDTO = new SpecialistDTO();
+        if (specialistProfileService.addPatientToTheCollectionOfSpecialist(specialistDTO, username, authentication)) {
+            model.addAttribute("nameSpecialist", specialistDTO.getName());
+            model.addAttribute("patients", specialistDTO.getPatientDTOList());
             model.addAttribute("success", "You have successfully added a new patient.");
         } else {
+            model.addAttribute("nameSpecialist", specialistDTO.getName());
+            model.addAttribute("patients", specialistDTO.getPatientDTOList());
             model.addAttribute("error", "There's no such patient as " + username + ". Make sure you have" +
                     " a valid username or the patient is not already in your dataset.");
         }
 
-        specialistProfileService.getDataToProfileSpecialist(model, authentication, null);
         return "profileSpecialist";
     }
 
+
     @RequestMapping("/{username}")
     public String showPatient(@PathVariable String username, Model model, Authentication authentication) {
-        specialistProfileService.getDataToProfileSpecialist(model, authentication, username);
-        return "profileSpecialist";
+        PatientDTO patientDTO = new PatientDTO();
+        SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
+        specialistProfileService.getDataOfPatient(supportProfileDTO, patientDTO,
+                authentication, username);
+        return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
 
@@ -57,11 +60,10 @@ public class SpecialistController {
                              @RequestParam(value = "frequencyChosen") Frequency newFrequency,
                              Model model, Authentication authentication) {
 
-        if (specialistProfileService.updateFrequency(username, newFrequency, authentication)) {
-            specialistProfileService.getDataToProfileSpecialist(model, authentication, username);
-            return "profileSpecialist";
-        } else
-            return "error";
+        PatientDTO patientDTO = new PatientDTO();
+        SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
+        specialistProfileService.updateFrequency(patientDTO, supportProfileDTO, username, newFrequency, authentication);
+        return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
 
@@ -70,26 +72,21 @@ public class SpecialistController {
                                 @RequestParam(value = "opinion") String opinion,
                                 Model model,
                                 Authentication authentication) {
-
-        if (specialistProfileService.updateResultsDescription(username, opinion, authentication)) {
-            specialistProfileService.getDataToProfileSpecialist(model, authentication, username);
-            return "profileSpecialist";
-        } else {
-            return "error";
-        }
+        PatientDTO patientDTO = new PatientDTO();
+        SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
+        specialistProfileService.updateResultsDescription(patientDTO, supportProfileDTO, username, opinion, authentication);
+        return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
 
-    @RequestMapping("/deleteExercise/{exerciseName}")
+    @RequestMapping("/delete/{exerciseName}")
     public String deleteExercise(@ModelAttribute("username") String username,
                                  @PathVariable String exerciseName, Model model,
                                  Authentication authentication) {
-        if (specialistProfileService.deleteExercise(username, exerciseName, authentication)) {
-            specialistProfileService.getDataToProfileSpecialist(model, authentication, username);
-            return "profileSpecialist";
-        } else {
-            return "error";
-        }
+        PatientDTO patientDTO = new PatientDTO();
+        SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
+        specialistProfileService.deleteExercise(patientDTO, supportProfileDTO, username, exerciseName, authentication);
+        return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
 
@@ -97,18 +94,16 @@ public class SpecialistController {
     public String addExercise(@ModelAttribute("username") String username,
                               @RequestParam(value = "exerciseChosen") String newExerciseName,
                               Model model, Authentication authentication) {
-        if (specialistProfileService.addExercise(username, newExerciseName, authentication)) {
-            specialistProfileService.getDataToProfileSpecialist(model, authentication, username);
-            return "profileSpecialist";
-        } else {
-            return "error";
-        }
+        PatientDTO patientDTO = new PatientDTO();
+        SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
+        specialistProfileService.addExercise(patientDTO, supportProfileDTO, username, newExerciseName, authentication);
+        return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
 
     @RequestMapping("/aboutSpecialist")
     public String seeAboutSpecialist(Model model, Authentication authentication) {
-        specialistProfileService.getDataToProfileSpecialist(model, authentication, null);
+        model.addAttribute("currentSpecialist", specialistProfileService.getDataToAboutSpecialist(authentication));
         return "aboutSpecialist";
     }
 
@@ -118,6 +113,15 @@ public class SpecialistController {
                        Model model, Authentication authentication) {
         //supportService.getPatientIfIsInCollection(userService.getCurrentUser(authentication), username);
         return "rtc";
+    }
+
+
+    public String setModelPatientOperations(Model model, PatientDTO patientDTO, SupportProfileDTO supportProfileDTO) {
+        model.addAttribute("patientClicked", patientDTO);
+        model.addAttribute("frequenciesAll", supportProfileDTO.getFrequencies());
+        model.addAttribute("exercises", supportProfileDTO.getExercises());
+        model.addAttribute("exercisesAll", supportProfileDTO.getExercisesAll());
+        return "patientOperations";
     }
 
 

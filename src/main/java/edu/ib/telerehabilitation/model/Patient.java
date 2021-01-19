@@ -1,5 +1,6 @@
 package edu.ib.telerehabilitation.model;
 
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import edu.ib.telerehabilitation.model.User;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
-    void addUser(UserDTO userDTO);
+    Boolean addUser(UserDTO userDTO);
     User getCurrentUser(Authentication authentication);
     User findByUsername(String username);
 }

@@ -75,7 +75,7 @@
                 data-image-src="images/patient.jpg"
         >
             <div class="tm-bg-black-transparent tm-parallax-overlay">
-                <h2>Hi [[${currentPatient.getName()}]]!</h2>
+                <h2>Hi [[${patient.getName()}]]!</h2>
                 <p>Welcome to your profile</p>
             </div>
         </div>
@@ -89,33 +89,21 @@
             <thead>
             <tr class="table-info">
                 <th scope="col">Name and surname</th>
-                <th>[[${currentPatient.getName()}]] [[${currentPatient.getSurname()}]]</th>
+                <th>[[${patient.getName()}]] [[${patient.getSurname()}]]</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <th scope="col">Phone number</th>
-                <th th:text="${currentPatient.getPhoneNumber()}"></th>
+                <th th:text="${patient.getPhoneNumber()}"></th>
             </tr>
             <tr>
                 <th scope="col">E-mail</th>
-                <th th:text="${currentPatient.getEmail()}"></th>
+                <th th:text="${patient.getEmail()}"></th>
             </tr>
-            <tr>
-                <th scope="col">Your specialist</th>
-                <th>[[${currentPatient.getSpecialist().getName()}]] [[${currentPatient.getSpecialist().getSurname()}]]
-                </th>
-            </tr>
-            <tr>
-                <th scope="col">Contact to specialist</th>
-                <th>
 
-                    [[${currentPatient.getSpecialist().getEmail()}]],
-                    [[${currentPatient.getSpecialist().getPhoneNumber()}]]
-                </th>
-            </tr>
             <tr>
-                <th scope="col">Audio/video chat</th>
+                <th scope="col">Audio/video chat with specialist</th>
                 <th><a th:href="@{/call}">
                     <button value="call" class="btn btn-info">
                         Call now
@@ -125,15 +113,15 @@
             </tr>
             <tr>
                 <th scope="col">Recommended frequency of training</th>
-                <th th:text="${currentPatient.getFrequency()}"></th>
+                <th th:text="${patient.getFrequency()}"></th>
             </tr>
             <tr>
                 <th scope="col">History of your trainings</th>
-                <th th:text="${currentPatient.getTrainingDates()}"></th>
+                <th th:text="${patient.getTrainingDates()}"></th>
             </tr>
             <tr>
                 <th scope="col">Opinion about results</th>
-                <th th:text="${currentPatient.getResultsDescription()}"></th>
+                <th th:text="${patient.getResultsDescription()}"></th>
             </tr>
 
             </tbody>

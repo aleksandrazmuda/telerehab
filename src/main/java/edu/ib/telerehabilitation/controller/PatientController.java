@@ -1,5 +1,7 @@
 package edu.ib.telerehabilitation.controller;
 
+
+import edu.ib.telerehabilitation.datatransferobject.PatientDTO;
 import edu.ib.telerehabilitation.service.PatientProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,18 +23,17 @@ public class PatientController {
 
     @RequestMapping("/trainingDone")
     public String trainingDoneAddDate(Model model, Authentication authentication) {
-        if (patientProfileService.updateTrainingDates(authentication, LocalDate.now())) {
-            patientProfileService.getDataToProfilePatient(model, authentication);
-            model.addAttribute("success", "You successfully informed about the training done.");
-            return "profilePatient";
-        }
-        return "error";
+        PatientDTO patientDTO = patientProfileService.updateTrainingDates(authentication, LocalDate.now());
+        model.addAttribute("patientName", patientDTO.getName());
+        model.addAttribute("exercises", patientDTO.getExercises());
+        model.addAttribute("success", "You successfully informed about the training done.");
+        return "profilePatient";
     }
 
 
     @RequestMapping("/aboutPatient")
     public String seeAboutPatient(Model model, Authentication authentication) {
-        patientProfileService.getDataToAboutPatient(model, authentication);
+        model.addAttribute("patient", patientProfileService.getDataToAboutPatient(authentication));
         return "aboutPatient";
     }
 }

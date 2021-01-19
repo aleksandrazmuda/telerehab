@@ -1,17 +1,13 @@
 package edu.ib.telerehabilitation.controller;
 
-import edu.ib.telerehabilitation.datatransferobject.UserDTO;
-import edu.ib.telerehabilitation.model.Patient;
-import edu.ib.telerehabilitation.model.Specialist;
+import edu.ib.telerehabilitation.datatransferobject.*;
 import edu.ib.telerehabilitation.model.User;
 import edu.ib.telerehabilitation.securityServices.SecurityService;
-import edu.ib.telerehabilitation.securityServices.UserValidator;
 import edu.ib.telerehabilitation.service.PatientProfileService;
 import edu.ib.telerehabilitation.service.SpecialistProfileService;
 import edu.ib.telerehabilitation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,17 +15,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AuthenticationController {
 
     private UserService userService;
     private SecurityService securityService;
+    private UserValidator userValidator;
     private SpecialistProfileService specialistProfileService;
     private PatientProfileService patientProfileService;
-    private UserValidator userValidator;
+
 
     @Autowired
     public AuthenticationController(UserService userService, SecurityService securityService, SpecialistProfileService specialistProfileService, PatientProfileService patientProfileService, UserValidator userValidator) {
@@ -51,14 +46,16 @@ public class AuthenticationController {
 
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") UserDTO userForm, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") UserDTO userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors())
+            return "registration";
+        if (!userService.addUser(userForm)) {
+            model.addAttribute("usernameError", "This username is not available.");
             return "registration";
         }
-        userService.addUser(userForm);
-        securityService.autoLogin(userForm.getUserName(), userForm.getPasswordConfirm());
-        return "redirect:/welcome";
+
+        return "login";
     }
 
 
@@ -78,10 +75,15 @@ public class AuthenticationController {
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model, Authentication authentication) {
         if (authentication.getAuthorities().toString().equals("[PATIENT]")) {
-            patientProfileService.getDataToProfilePatient(model, authentication);
+            PatientDTO patientDTO = patientProfileService.getDataToProfilePatient(authentication);
+            model.addAttribute("patientName", patientDTO.getName());
+            model.addAttribute("exercises", patientDTO.getExercises());
             return "profilePatient";
         } else {
-            specialistProfileService.getDataToProfileSpecialist(model, authentication, null);
+            SpecialistDTO specialistDTO = new SpecialistDTO();
+            specialistProfileService.getDataToProfileSpecialist(specialistDTO, authentication);
+            model.addAttribute("nameSpecialist", specialistDTO.getName());
+            model.addAttribute("patients", specialistDTO.getPatientDTOList());
             return "profileSpecialist";
         }
 

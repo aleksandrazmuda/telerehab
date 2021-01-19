@@ -1,9 +1,7 @@
 package edu.ib.telerehabilitation.model;
 
-import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import java.util.Set;
 
 @MappedSuperclass
 public class User {
