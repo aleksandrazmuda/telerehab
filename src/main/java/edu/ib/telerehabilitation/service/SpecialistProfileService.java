@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SpecialistProfileService {
@@ -29,18 +31,19 @@ public class SpecialistProfileService {
     // PU Dodaj pacjenta
     public Boolean addPatientToTheCollectionOfSpecialist(SpecialistDTO specialistDTO, String patientUsername, Authentication authentication) {
         Specialist userSpecialist = (Specialist) userService.getCurrentUser(authentication); //PU Wyszukaj specjalistę
-        List<PatientDTO> patients = supportService.findPatientsOfSpecialist(userSpecialist);   //PU Wyszukaj pacjentów ze zbioru specjalisty
+        List<Patient> patients = supportService.findPatientsOfSpecialist(userSpecialist);   //PU Wyszukaj pacjentów ze zbioru specjalisty
         Patient patient = supportService.findPatientByUserName(patientUsername); //PU Wyszukaj pacjenta
         specialistDTO.setName(userSpecialist.getName());
+        List<PatientDTO> patientsDTO = patients.stream().map(PatientDTO::new).collect(Collectors.toList());
 
-        if (patient != null && !supportService.checkIfPatientIsInCollection(patients, patient)) {    //metoda pomocnicza
+        if (patient != null && !patients.contains(patient)) {
             patient.setSpecialist(userSpecialist);
             patientRepo.save(patient);
-            specialistDTO.setPatientDTOList(patients);
+            specialistDTO.setPatientDTOList(patientsDTO);
             return true;
         }
 
-        specialistDTO.setPatientDTOList(patients);
+        specialistDTO.setPatientDTOList(patientsDTO);
         return false;
     }
 
@@ -48,9 +51,9 @@ public class SpecialistProfileService {
     // PU Sprawdź dane dotyczące pacjenta
     public void getDataOfPatient(SupportProfileDTO supportProfileDTO, PatientDTO patientDTO,
                                  Authentication authentication, String username) {
-        //SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
         Patient patientClicked = supportService.getPatientIfIsInCollection(authentication, username);   //PU Operacje na specjalistach i ich pacjentach
         getDataAboutPatient(patientClicked, patientDTO, supportProfileDTO);
+
     }
 
 
@@ -110,10 +113,12 @@ public class SpecialistProfileService {
 
     //pomocnicza
     public void getDataAboutPatient(Patient patient, PatientDTO patientDTO, SupportProfileDTO supportProfileDTO) {
-        List<ExerciseDTO> exercisesAll = supportService.getExercisesAll(patient);
-        List<ExerciseDTO> exercises = supportService.findExercisesOfPatient(patient);
+        List<Exercise> exercisesAll = supportService.getExercisesAll(patient);
+        Set<Exercise> exercises = supportService.findExercisesOfPatient(patient);
         List<Frequency> frequenciesAll = new ArrayList<>(Arrays.asList(Frequency.values()));
 
+        List<ExerciseDTO> exercisesDTO = exercises.stream().map(ExerciseDTO::new).collect(Collectors.toList());
+        List<ExerciseDTO> exercisesAllDTO = exercisesAll.stream().map(ExerciseDTO::new).collect(Collectors.toList());
         patientDTO.setName(patient.getName());
         patientDTO.setSurname(patient.getSurname());
         patientDTO.setUserName(patient.getUserName());
@@ -123,8 +128,8 @@ public class SpecialistProfileService {
         patientDTO.setFrequency(patient.getFrequency());
         patientDTO.setResultsDescription(patient.getResultsDescription());
 
-        supportProfileDTO.setExercises(exercises);
-        supportProfileDTO.setExercisesAll(exercisesAll);
+        supportProfileDTO.setExercises(exercisesDTO);
+        supportProfileDTO.setExercisesAll(exercisesAllDTO);
         supportProfileDTO.setFrequencies(frequenciesAll);
     }
 
@@ -132,22 +137,19 @@ public class SpecialistProfileService {
     // pomocnicza
     public void getDataToProfileSpecialist(SpecialistDTO specialistDTO, Authentication authentication) {
         Specialist userSpecialist = (Specialist) userService.getCurrentUser(authentication);
-        List<PatientDTO> patients = supportService.findPatientsOfSpecialist(userSpecialist);
+        List<Patient> patients = supportService.findPatientsOfSpecialist(userSpecialist);
+        List<PatientDTO> patientsDTO = patients.stream().map(PatientDTO::new).collect(Collectors.toList());
+        System.out.println(patientsDTO);
         specialistDTO.setName(userSpecialist.getName());
-        specialistDTO.setPatientDTOList(patients);
+        specialistDTO.setPatientDTOList(patientsDTO);
     }
 
 
     // dodatkowa
     public SpecialistDTO getDataToAboutSpecialist(Authentication authentication) {
         Specialist userSpecialist = (Specialist) userService.getCurrentUser(authentication);
-        SpecialistDTO specialistDTO = new SpecialistDTO();
-        specialistDTO.setName(userSpecialist.getName());
-        specialistDTO.setSurname(userSpecialist.getSurname());
-        specialistDTO.setPhoneNumber(userSpecialist.getPhoneNumber());
-        specialistDTO.setEmail(userSpecialist.getEmail());
-        specialistDTO.setUserName(userSpecialist.getUserName());
-        return specialistDTO;
+        return new SpecialistDTO(userSpecialist.getEmail(), userSpecialist.getUserName(), userSpecialist.getName(),
+                userSpecialist.getSurname(), userSpecialist.getPhoneNumber());
     }
 
 

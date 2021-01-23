@@ -19,6 +19,11 @@ public class SpecialistDTO extends UserDTO{
 
     }
 
+    public SpecialistDTO(String email, String userName, String name, String surname, String phoneNumber) {
+        super(email,userName,name,surname,phoneNumber);
+    }
+
+
     public List<PatientDTO> getPatientDTOList() {
         return patientDTOList;
     }

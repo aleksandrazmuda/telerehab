@@ -2,6 +2,7 @@ package edu.ib.telerehabilitation.service;
 
 import edu.ib.telerehabilitation.datatransferobject.ExerciseDTO;
 import edu.ib.telerehabilitation.datatransferobject.PatientDTO;
+import edu.ib.telerehabilitation.model.Exercise;
 import edu.ib.telerehabilitation.model.Patient;
 import edu.ib.telerehabilitation.persistance.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientProfileService {
@@ -25,38 +28,42 @@ public class PatientProfileService {
         this.supportService = supportService;
     }
 
-    // PU Wybierz bieżący plan treningowy
-    public PatientDTO getDataToProfilePatient(Authentication authentication) {
-        Patient userPatient = (Patient) userService.getCurrentUser(authentication); // PU Wyszukaj pacjenta
-        List<ExerciseDTO> exercises = supportService.findExercisesOfPatient(userPatient);    // PU Wyszukaj ćwiczenia ze zbioru pacjenta
-        PatientDTO patientDTO = new PatientDTO();
-        patientDTO.setName(userPatient.getName());
-        patientDTO.setExercises(exercises);
-        return patientDTO;
 
+    // PU Wybierz bieżący plan treningowy
+    public List<ExerciseDTO> getTrainingPlan(Authentication authentication) {
+        Patient userPatient = (Patient) userService.getCurrentUser(authentication); // pu
+        if(userPatient==null)
+            return null;
+
+        Set<Exercise> exercises = supportService.findExercisesOfPatient(userPatient); // pu
+        return exercises.stream()
+                .map(ExerciseDTO::new)
+                .collect(Collectors.toList());
     }
 
 
-    // PU Zobacz informacje o sobie (nie tylko wyniki rehabilitacji)
+    // PU Zobacz informacje przypisane pacjentowi
     public PatientDTO getDataToAboutPatient(Authentication authentication) {
         Patient userPatient = (Patient) userService.getCurrentUser(authentication); // PU Wyszukaj pacjenta
-        PatientDTO patientDTO = new PatientDTO();
-        patientDTO.setName(userPatient.getName());
-        patientDTO.setEmail(userPatient.getEmail());
-        patientDTO.setPhoneNumber(userPatient.getPhoneNumber());
-        patientDTO.setFrequency(userPatient.getFrequency());
-        patientDTO.setResultsDescription(userPatient.getResultsDescription());
-        patientDTO.setTrainingDates(userPatient.getTrainingDates());
-        return patientDTO;
+        if(userPatient==null)
+            return null;
+
+        return new PatientDTO(userPatient.getEmail(), userPatient.getName(),
+                userPatient.getPhoneNumber(), userPatient.getResultsDescription(),
+                userPatient.getFrequency(), userPatient.getTrainingDates());
     }
 
 
     // PU Dodaj informację o wykonanym treningu do historii
-    public PatientDTO updateTrainingDates(Authentication authentication, LocalDate date) {
+    public Boolean updateTrainingDates(Authentication authentication, LocalDate date) {
         Patient userPatient = (Patient) userService.getCurrentUser(authentication); // PU Wyszukaj pacjenta
+        if (userPatient == null)
+            return false;
+
         userPatient.getTrainingDates().add(date);
         patientRepo.save(userPatient);
-        return getDataToProfilePatient(authentication);
+        return true;
     }
+
 
 }

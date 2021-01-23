@@ -1,12 +1,16 @@
 package edu.ib.telerehabilitation.datatransferobject;
 
+import edu.ib.telerehabilitation.model.Exercise;
 import edu.ib.telerehabilitation.model.Frequency;
+import edu.ib.telerehabilitation.model.Patient;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
-public class PatientDTO extends UserDTO{
+public class PatientDTO extends UserDTO {
 
     private List<ExerciseDTO> exercises;
     private Frequency frequency;
@@ -30,6 +34,23 @@ public class PatientDTO extends UserDTO{
 
     public PatientDTO() {
     }
+
+    public PatientDTO(String name, List<ExerciseDTO> exercises) {
+        super(name);
+        this.exercises = exercises;
+    }
+
+    public PatientDTO(String email, String name, String phoneNumber, String resultsDescription, Frequency frequency, List<LocalDate> trainingDates) {
+        super(email, name, phoneNumber);
+        this.resultsDescription = resultsDescription;
+        this.frequency = frequency;
+        this.trainingDates = trainingDates;
+    }
+
+    public PatientDTO(Patient patient) {
+        super(patient.getName(), patient.getSurname(), patient.getUserName(), patient.getEmail());
+    }
+
 
     public List<ExerciseDTO> getExercises() {
         return exercises;

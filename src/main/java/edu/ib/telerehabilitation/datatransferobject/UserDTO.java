@@ -1,6 +1,8 @@
 package edu.ib.telerehabilitation.datatransferobject;
 
 
+import edu.ib.telerehabilitation.model.Patient;
+
 public class UserDTO {
 
     private String email;
@@ -24,6 +26,37 @@ public class UserDTO {
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.role = role;
+    }
+
+    public UserDTO(String name) {
+        this.name = name;
+    }
+
+    public UserDTO(String name, String surname, String userName, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.userName = userName;
+        this.email = email;
+    }
+
+    public UserDTO(Patient patient) {
+        this.name = patient.getName();
+        this.surname = patient.getSurname();
+        this.userName = patient.getUserName();
+    }
+
+    public UserDTO(String email, String name, String phoneNumber) {
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public UserDTO(String email, String userName, String name, String surname, String phoneNumber) {
+        this.email = email;
+        this.userName = userName;
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {

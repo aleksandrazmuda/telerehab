@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.expression.Sets;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -34,50 +36,21 @@ public class SupportService {
     }
 
     // PU Wyszukaj pacjentów w zbiorze specjalisty
-    public List<PatientDTO> findPatientsOfSpecialist(User userSpecialist) {
-        List<PatientDTO> patientDTOList = new ArrayList<>();
-        for (Patient p : patientRepo.findBySpecialist((Specialist) userSpecialist)) {
-            PatientDTO patientDTO = new PatientDTO();
-            patientDTO.setName(p.getName());
-            patientDTO.setSurname(p.getSurname());
-            patientDTO.setUserName(p.getUserName());
-            patientDTOList.add(patientDTO);
-        }
-        return patientDTOList;
-    }
-
-
-    // Metoda pomocnicza
-    public Boolean checkIfPatientIsInCollection(List<PatientDTO> patients, Patient patient) {
-        for (PatientDTO p : patients) {
-            if (patient.getUserName().equals(p.getUserName())) {
-                return true;
-            }
-        }
-        return false;
+    public List<Patient> findPatientsOfSpecialist(Specialist specialist) {
+        return patientRepo.findBySpecialist(specialist);
     }
 
 
     // PU Wyszukaj ćwiczenia ze zbioru pacjenta
-    public List<ExerciseDTO> findExercisesOfPatient(Patient patient) {
-        List<ExerciseDTO> exerciseDTOList = new ArrayList<>();
-        for (Exercise e : patient.getExercises()) {
-            ExerciseDTO exerciseDTO = new ExerciseDTO(e.getName(), e.getVisualRepresentation());
-            exerciseDTOList.add(exerciseDTO);
-        }
-        return exerciseDTOList;
+    public Set<Exercise> findExercisesOfPatient(Patient patient) {
+        return patient.getExercises();
     }
 
 
     // Metoda pomocnicza
-    public List<ExerciseDTO> getExercisesAll(Patient patient) {
-        List<ExerciseDTO> exercisesAll = new ArrayList<>();
-        for (Exercise e : exerciseRepo.findAll()) {
-            if (!patient.getExercises().contains(e)) {
-                ExerciseDTO exerciseDTO = new ExerciseDTO(e.getName(), e.getVisualRepresentation());
-                exercisesAll.add(exerciseDTO);
-            }
-        }
+    public List<Exercise> getExercisesAll(Patient patient) {
+        List<Exercise> exercisesAll = (List<Exercise>) exerciseRepo.findAll();
+        exercisesAll.removeAll(patient.getExercises());
         return exercisesAll;
     }
 
@@ -86,12 +59,18 @@ public class SupportService {
     public Patient getPatientIfIsInCollection(Authentication authentication, String username) {
         Specialist specialist = (Specialist) userService.getCurrentUser(authentication); //PU Wyszukaj specjalistę
         Patient patient = new Patient();
-
-        if (specialist != null)
-            patient = findPatientByUserName(username); //PU Wyszukaj pacjenta
-        if (patient != null && checkIfPatientIsInCollection(findPatientsOfSpecialist(specialist), patient))    //PU Wyszukaj pacjentów w zbiorze specjalisty
-            return patient;
-        return null;
+        if (specialist != null) {
+            try {
+                patient = findPatientsOfSpecialist(specialist)  //PU Wyszukaj pacjenta w zbiorze specjalisty
+                        .stream()
+                        .filter(x -> x.getUserName().equals(username))
+                        .findFirst()
+                        .orElseThrow(NullPointerException::new);
+            } catch (Exception e) {
+                patient = null;
+            }
+        }
+        return patient;
     }
 
 

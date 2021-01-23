@@ -89,7 +89,7 @@
             <ul th:each="p : ${patients}" class="tabs clearfix filters-button-group">
 
                 <li>
-                    <a th:href="@{/{username}(username=${p.getUserName()})}" class="active">
+                    <a th:href="@{/{username}(username=${p.getUserName()})}"  class="active">
                         <div class="tm-tab-icon"></div>
                         [[${p.getName()}]] [[${p.getSurname()}]]
                     </a>

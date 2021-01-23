@@ -11,5 +11,5 @@ import java.util.List;
 public interface PatientRepo extends CrudRepository<Patient, Long> {
     Patient findByUserName (String username);
     List<Patient> findBySpecialist (Specialist specialist);
-
 }
+

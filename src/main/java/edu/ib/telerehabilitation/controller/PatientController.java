@@ -1,6 +1,7 @@
 package edu.ib.telerehabilitation.controller;
 
 
+import edu.ib.telerehabilitation.datatransferobject.ExerciseDTO;
 import edu.ib.telerehabilitation.datatransferobject.PatientDTO;
 import edu.ib.telerehabilitation.service.PatientProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class PatientController {
@@ -21,13 +23,15 @@ public class PatientController {
         this.patientProfileService = patientProfileService;
     }
 
+
     @RequestMapping("/trainingDone")
     public String trainingDoneAddDate(Model model, Authentication authentication) {
-        PatientDTO patientDTO = patientProfileService.updateTrainingDates(authentication, LocalDate.now());
-        model.addAttribute("patientName", patientDTO.getName());
-        model.addAttribute("exercises", patientDTO.getExercises());
-        model.addAttribute("success", "You successfully informed about the training done.");
-        return "profilePatient";
+        if(patientProfileService.updateTrainingDates(authentication, LocalDate.now()))
+            model.addAttribute("success", "You successfully informed about the training done.");
+        else
+            model.addAttribute("error", "Something went wrong.");
+
+        return "trainingDone";
     }
 
 

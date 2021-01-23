@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 
 @Controller
 public class AuthenticationController {
@@ -40,13 +42,14 @@ public class AuthenticationController {
         if (securityService.isAuthenticated()) {
             return "redirect:/";
         }
-        model.addAttribute("userForm", new User());
+        model.addAttribute("userForm", new UserDTO());
         return "registration";
     }
 
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") UserDTO userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("userForm") UserDTO userForm,
+                               BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors())
             return "registration";
@@ -54,7 +57,6 @@ public class AuthenticationController {
             model.addAttribute("usernameError", "This username is not available.");
             return "registration";
         }
-
         return "login";
     }
 
@@ -75,9 +77,8 @@ public class AuthenticationController {
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model, Authentication authentication) {
         if (authentication.getAuthorities().toString().equals("[PATIENT]")) {
-            PatientDTO patientDTO = patientProfileService.getDataToProfilePatient(authentication);
-            model.addAttribute("patientName", patientDTO.getName());
-            model.addAttribute("exercises", patientDTO.getExercises());
+            List<ExerciseDTO> exercises = patientProfileService.getTrainingPlan(authentication);
+            model.addAttribute("exercises", exercises);
             return "profilePatient";
         } else {
             SpecialistDTO specialistDTO = new SpecialistDTO();

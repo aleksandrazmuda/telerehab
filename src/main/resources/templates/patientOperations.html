@@ -178,6 +178,7 @@
         <li>
             <strong th:text="${e.getName()}"></strong><br>
             <img th:src="${e.getVisualRepresentation()}" alt="photo" th:width="700">
+
         </li>
 
         <form th:action="@{/delete/{exerciseName}(exerciseName=${e.getName()})}">
@@ -193,7 +194,7 @@
     </ul>
 
     <div class="row form-group"></div>
-    <form th:align="center" th:action="@{/addNewExercise}">
+    <form th:action="@{/addNewExercise}" th:align="center">
         <div class="container-fluid" align="center">
             <div class=raw>
                 <fieldset>

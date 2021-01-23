@@ -1,5 +1,7 @@
 package edu.ib.telerehabilitation.datatransferobject;
 
+import edu.ib.telerehabilitation.model.Exercise;
+
 public class ExerciseDTO {
 
     private String name;
@@ -10,8 +12,14 @@ public class ExerciseDTO {
         this.visualRepresentation = visualRepresentation;
     }
 
+    public ExerciseDTO(Exercise exercise) {
+        this.name = exercise.getName();
+        this.visualRepresentation = exercise.getVisualRepresentation();
+    }
+
     public ExerciseDTO() {
     }
+
 
     public String getName() {
         return name;

@@ -38,7 +38,7 @@
                             <li class="nav-item active">
                                 <div class="tm-nav-link-highlight"></div>
                                 <a class="nav-link" href="#"
-                                >Profile <span
+                                >Training <span
                                         class="sr-only">(current)</span> </a
                                 >
                             </li>
@@ -74,16 +74,12 @@
         >
             <div class="tm-bg-black-transparent tm-parallax-overlay">
                 <div sec:authorize="isAuthenticated()"></div>
-                <h2>Hi [[${patientName}]]!</h2>
-                <p>Welcome to your profile</p>
+                <p>Welcome to your profile!</p>
             </div>
         </div>
     </div>
 </div>
-<div class="container">
-    <div class="alert alert-success alert-dismissible" onclose="" role="alert" th:text="${success}"
-         th:if="${success}"></div>
-</div>
+
 <section class="row tm-pt-4">
     <div class="col-12 tm-page-cols-container">
 
@@ -123,7 +119,7 @@
 <div class="row form-group"></div>
 <footer class="contact">
     <div class="container-fluid">
-                <img src="images/logo.png" alt="logo" th:width="45" th:height="45">
+        <img src="images/logo.png" alt="logo" th:width="45" th:height="45">
         <address class="contact-info">TELEREHAB
             telerehab@app.com.pl
         </address>

@@ -30,30 +30,20 @@ public class UserServiceImpl implements UserService {
     // PU Zarejestruj się
     @Override
     public Boolean addUser(UserDTO userDTO) {
-
         if (findByUsername(userDTO.getUserName()) != null) {
             return false;
         } else {
             if (userDTO.getRole().equals("PATIENT")) {
-                Patient patient = new Patient();
-                patient.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-                patient.setRole(userDTO.getRole());
-                patient.setUserName(userDTO.getUserName());
-                patient.setPhoneNumber(userDTO.getPhoneNumber());
-                patient.setEmail(userDTO.getEmail());
-                patient.setName(userDTO.getName());
-                patient.setSurname(userDTO.getSurname());
+                Patient patient = new Patient(userDTO.getEmail(), userDTO.getUserName(),
+                        userDTO.getName(), userDTO.getSurname(), userDTO.getPhoneNumber(),
+                        bCryptPasswordEncoder.encode(userDTO.getPassword()),
+                        userDTO.getPasswordConfirm(), userDTO.getRole());
                 patientRepo.save(patient);
-
-            } else if (userDTO.getRole().equals("SPECIALIST")) {
-                Specialist specialist = new Specialist();
-                specialist.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-                specialist.setRole(userDTO.getRole());
-                specialist.setUserName(userDTO.getUserName());
-                specialist.setPhoneNumber(userDTO.getPhoneNumber());
-                specialist.setEmail(userDTO.getEmail());
-                specialist.setName(userDTO.getName());
-                specialist.setSurname(userDTO.getSurname());
+            } else {
+                Specialist specialist = new Specialist(userDTO.getEmail(), userDTO.getUserName(),
+                        userDTO.getName(), userDTO.getSurname(), userDTO.getPhoneNumber(),
+                        bCryptPasswordEncoder.encode(userDTO.getPassword()),
+                        userDTO.getPasswordConfirm(), userDTO.getRole());
                 specialistRepo.save(specialist);
             }
             return true;
@@ -63,14 +53,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser(Authentication authentication) {
-        UserDetails currentUserDetails = (authentication == null) ? null : (UserDetails) authentication.getPrincipal();
+        UserDetails currentUserDetails = (authentication == null) ? null :
+                (UserDetails) authentication.getPrincipal();
         User currentUser = new User();
         if (currentUserDetails != null) {
             currentUser = findByUsername(currentUserDetails.getUsername());
         }
         return currentUser;
     }
-
 
     @Override
     public User findByUsername(String username) {
