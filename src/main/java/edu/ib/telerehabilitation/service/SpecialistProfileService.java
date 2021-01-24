@@ -61,7 +61,7 @@ public class SpecialistProfileService {
     public void updateFrequency(PatientDTO patientDTO, SupportProfileDTO supportProfileDTO,
                                 String username, Frequency frequency, Authentication authentication) {
 
-        Patient patient = supportService.getPatientIfIsInCollection(authentication, username);  //PU Operacje na specjalistach i ich pacjentach
+        Patient patient = supportService.getPatientIfIsInCollection(authentication, username);              //PU Operacje na specjalitach i ich pacjentach
         if (patient != null) {
             patient.setFrequency(frequency);
             patientRepo.save(patient);
@@ -88,7 +88,7 @@ public class SpecialistProfileService {
 
         Exercise exercise = supportService.findExerciseByName(exerciseName);  //PU Wyszukaj ćwiczenie
         Patient patient = supportService.getPatientIfIsInCollection(authentication, username);  //PU Operacje na specjalistach i ich pacjentach
-
+        //wyszukiwanie ćwiczeń danego specjalisty i sprawdzać czy nie ma już go przypadkiem? to samo w dodawaniu zamiast wyszukaj ćwiczenie
         if (patient != null) {
             patient.getExercises().remove(exercise);
             patientRepo.save(patient);

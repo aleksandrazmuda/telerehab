@@ -57,11 +57,11 @@ public class SupportService {
 
     //    PU Operacje na specjalistach i ich pacjentach
     public Patient getPatientIfIsInCollection(Authentication authentication, String username) {
-        Specialist specialist = (Specialist) userService.getCurrentUser(authentication); //PU Wyszukaj specjalistę
+        Specialist specialist = (Specialist) userService.getCurrentUser(authentication);             //PU Wyszukaj specjalistę
         Patient patient = new Patient();
         if (specialist != null) {
             try {
-                patient = findPatientsOfSpecialist(specialist)  //PU Wyszukaj pacjenta w zbiorze specjalisty
+                patient = findPatientsOfSpecialist(specialist)                                          //PU Wyszukaj pacjenta w zbiorze specjalisty
                         .stream()
                         .filter(x -> x.getUserName().equals(username))
                         .findFirst()

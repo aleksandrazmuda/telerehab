@@ -91,4 +91,10 @@ public class AuthenticationController {
     }
 
 
+    @GetMapping("/accessDenied")
+    public String accessDenied(){
+        return "403";
+    }
+
+
 }

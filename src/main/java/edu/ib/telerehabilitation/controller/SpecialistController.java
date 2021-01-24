@@ -62,7 +62,8 @@ public class SpecialistController {
 
         PatientDTO patientDTO = new PatientDTO();
         SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
-        specialistProfileService.updateFrequency(patientDTO, supportProfileDTO, username, newFrequency, authentication);
+        specialistProfileService.updateFrequency(patientDTO, supportProfileDTO,
+                username, newFrequency, authentication);
         return setModelPatientOperations(model, patientDTO, supportProfileDTO);
     }
 
@@ -116,7 +117,8 @@ public class SpecialistController {
     }
 
 
-    public String setModelPatientOperations(Model model, PatientDTO patientDTO, SupportProfileDTO supportProfileDTO) {
+    public String setModelPatientOperations(Model model, PatientDTO patientDTO,
+                                            SupportProfileDTO supportProfileDTO) {
         model.addAttribute("patientClicked", patientDTO);
         model.addAttribute("frequenciesAll", supportProfileDTO.getFrequencies());
         model.addAttribute("exercises", supportProfileDTO.getExercises());
