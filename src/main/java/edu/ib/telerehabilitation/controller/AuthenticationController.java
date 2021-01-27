@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -92,8 +93,22 @@ public class AuthenticationController {
 
 
     @GetMapping("/accessDenied")
-    public String accessDenied(){
+    public String accessDenied() {
         return "403";
+    }
+
+
+    @RequestMapping("/call")
+    public String call(@ModelAttribute("username") String username, Model model,
+                       Authentication authentication) {
+        List<ExerciseDTO> exercises;
+        if (authentication.getAuthorities().toString().equals("[PATIENT]")) {
+            exercises = patientProfileService.getTrainingPlan(authentication);
+        } else {
+            exercises = specialistProfileService.getExerciseOfClickedPatient(authentication, username);
+        }
+        model.addAttribute("exercises", exercises);
+        return "chat";
     }
 
 

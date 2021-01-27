@@ -104,11 +104,22 @@
 
             <tr>
                 <th scope="col">Audio/video chat with specialist</th>
-                <th><a th:href="@{/call}">
-                    <button value="call" class="btn btn-info">
-                        Call now
-                    </button>
-                </a>
+                <th>
+                    <form class="form-inline" th:align="center" th:action="@{/call}">
+                        <div class="container-fluid" align="center">
+                            <div class=raw>
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input type="hidden" th:name="username"
+                                               th:value="${patient.getUserName()}"/>
+                                        <button type="submit" value="submit1" class="btn btn-info">Call
+                                        </button>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
                 </th>
             </tr>
             <tr>

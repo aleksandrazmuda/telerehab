@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600"/>
+    <link rel="stylesheet" href="/css/all.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/templatemo-style.css"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row tm-brand-row">
+        <div class="col-lg-4 col-10">
+            <div class="tm-brand-container">
+                <div class="tm-brand-texts">
+                    <h1 class="text-uppercase tm-brand-name">TeleRehab</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-2 tm-nav-col">
+            <div class="tm-nav">
+                <nav class="navbar navbar-expand-lg navbar-light tm-navbar">
+                    <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarNav"
+                            aria-controls="navbarNav"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto mr-0">
+                            <li>
+                                <div class="tm-nav-link-highlight"></div>
+                                <a class="nav-link" th:href="@{/welcome}"
+                                >Profile </a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <div class="tm-nav-link-highlight"></div>
+                                <div class="nav-link" sec:authorize="isAuthenticated()">
+                                    <form id="logoutForm" method="POST" th:action="@{/logout}">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    </form>
+                                    <span sec:authentication="name"></span><a
+                                        onclick="document.forms['logoutForm'].submit()">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="row tm-pt-6">
+    <div class="col-12 tm-page-cols-container">
+
+        <div class="tm-page-col-left">
+
+            <div id="main-content" class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="connect">Connection:</label>
+                                <button id="connect" class="btn btn-default" type="submit">Join</button>
+                                <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">
+                                    Leave
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="conversation" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Conversation</th>
+                                </tr>
+                                </thead>
+                                <tbody id="greetings">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input type="text" id="content" class="form-control" placeholder="Message...">
+                                </div>
+                                <button id="send" class="btn btn-info" type="submit">Send</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tm-page-col-right">
+            <h2>Training plan</h2>
+            <div class="row form-group"></div>
+            <ul th:each="e : ${exercises}">
+                <li>
+                    <strong th:text="${e.getName()}"></strong>
+                    <br>
+                    <img th:src="${e.getVisualRepresentation()}" alt="photo" th:width="700">
+                    <div class="row form-group"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="jumbotron">
+        <button class="btn-info" id="startButton">Start</button>
+        <button class="btn-info" id="callButton">Call</button>
+        <button class="btn-danger" id="hangupButton">Hang Up</button>
+        <video id="localVideo" autoplay playsinline></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+
+
+</section>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

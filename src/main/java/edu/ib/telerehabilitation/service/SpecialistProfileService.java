@@ -74,7 +74,9 @@ public class SpecialistProfileService {
     public void updateResultsDescription(PatientDTO patientDTO, SupportProfileDTO supportProfileDTO,
                                          String username, String opinion, Authentication authentication) {
         Patient patient = supportService.getPatientIfIsInCollection(authentication, username);  //PU Operacje na specjalistach i ich pacjentach
-        if (patient != null) {
+        if (opinion.length() > 255) {
+            getDataAboutPatient(patient, patientDTO, supportProfileDTO);
+        } else if (patient != null) {
             patient.setResultsDescription(opinion);
             patientRepo.save(patient);
         }
@@ -150,6 +152,18 @@ public class SpecialistProfileService {
         Specialist userSpecialist = (Specialist) userService.getCurrentUser(authentication);
         return new SpecialistDTO(userSpecialist.getEmail(), userSpecialist.getUserName(), userSpecialist.getName(),
                 userSpecialist.getSurname(), userSpecialist.getPhoneNumber());
+    }
+
+    // dotycząca webrtc
+    public List<ExerciseDTO> getExerciseOfClickedPatient(Authentication authentication, String username) {
+        Patient patient = supportService.getPatientIfIsInCollection(authentication, username);
+        if (patient != null) {
+            Set<Exercise> exercises = supportService.findExercisesOfPatient(patient);
+            return exercises.stream()
+                    .map(ExerciseDTO::new)
+                    .collect(Collectors.toList());
+        } else
+            return null;
     }
 
 

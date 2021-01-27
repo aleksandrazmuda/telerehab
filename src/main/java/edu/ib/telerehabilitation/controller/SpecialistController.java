@@ -3,6 +3,7 @@ package edu.ib.telerehabilitation.controller;
 import edu.ib.telerehabilitation.datatransferobject.*;
 
 import edu.ib.telerehabilitation.model.Frequency;
+import edu.ib.telerehabilitation.service.PatientProfileService;
 import edu.ib.telerehabilitation.service.SpecialistProfileService;
 import edu.ib.telerehabilitation.service.SupportService;
 import edu.ib.telerehabilitation.service.UserService;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Controller
 public class SpecialistController {
@@ -22,10 +26,9 @@ public class SpecialistController {
     private SpecialistProfileService specialistProfileService;
 
     @Autowired
-    public SpecialistController(SpecialistProfileService specialistProfileService, SupportService supportService, UserService userService) {
+    public SpecialistController(SpecialistProfileService specialistProfileService) {
         this.specialistProfileService = specialistProfileService;
     }
-
 
     @RequestMapping("/findPatient")
     public String findAndAddPatient(@RequestParam(value = "username") String username, Model model, Authentication authentication) {
@@ -45,7 +48,7 @@ public class SpecialistController {
     }
 
 
-    @RequestMapping("/{username}")
+    @RequestMapping("/show/{username}")
     public String showPatient(@PathVariable String username, Model model, Authentication authentication) {
         PatientDTO patientDTO = new PatientDTO();
         SupportProfileDTO supportProfileDTO = new SupportProfileDTO();
@@ -106,14 +109,6 @@ public class SpecialistController {
     public String seeAboutSpecialist(Model model, Authentication authentication) {
         model.addAttribute("currentSpecialist", specialistProfileService.getDataToAboutSpecialist(authentication));
         return "aboutSpecialist";
-    }
-
-
-    @RequestMapping("/callPatient")
-    public String call(@ModelAttribute("username") String username,
-                       Model model, Authentication authentication) {
-        //supportService.getPatientIfIsInCollection(userService.getCurrentUser(authentication), username);
-        return "rtc";
     }
 
 
