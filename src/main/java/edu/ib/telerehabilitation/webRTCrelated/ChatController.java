@@ -23,7 +23,7 @@ public class ChatController {
     @SendTo("/topic/greetings")
     public Message sendMessage(Message message, Authentication authentication) throws Exception {
 		User user = userService.getCurrentUser(authentication);
-        Thread.sleep(1000); // simulated delay
+        Thread.sleep(1000);
         return new Message(user.getUserName()+ ": " + HtmlUtils.htmlEscape(message.getContent()) + " ");
     }
 
