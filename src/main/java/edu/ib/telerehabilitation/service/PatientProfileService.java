@@ -31,11 +31,10 @@ public class PatientProfileService {
 
     // PU Wybierz bieżący plan treningowy
     public List<ExerciseDTO> getTrainingPlan(Authentication authentication) {
-        Patient userPatient = (Patient) userService.getCurrentUser(authentication); // pu
+        Patient userPatient = (Patient) userService.getCurrentUser(authentication);
         if(userPatient==null)
             return null;
-
-        Set<Exercise> exercises = supportService.findExercisesOfPatient(userPatient); // pu
+        Set<Exercise> exercises = supportService.findExercisesOfPatient(userPatient);
         return exercises.stream()
                 .map(ExerciseDTO::new)
                 .collect(Collectors.toList());

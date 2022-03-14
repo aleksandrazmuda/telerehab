@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
+    
 
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
